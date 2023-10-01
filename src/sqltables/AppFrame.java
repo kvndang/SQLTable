@@ -55,7 +55,7 @@ public class AppFrame extends JFrame {
 	private JLabel dobLbl;
 	private JTextField dobTxtField;
 	private JLabel storeIdLbl;
-	private JTextField textField;
+	private JTextField storeIdTxtField;
 	private JButton addEmployeeBtn;
 	private JLabel findLbl;
 	private JTextField textField_1;
@@ -166,6 +166,10 @@ public class AppFrame extends JFrame {
 			removeIDTxtField.setColumns(10);
 		
 			removeBtn = new JButton("REMOVE");
+			removeBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+				}
+			});
 			removePanel.add(removeBtn);
 		
 			prevBtn = new JButton("GO BACK");
@@ -231,6 +235,11 @@ public class AppFrame extends JFrame {
 			updateStoreIDTxtField.setColumns(10);
 		
 			updateBtn = new JButton("UPDATE");
+			updateBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+				}
+			});
 			updatePanel.add(updateBtn);
 		
 	}
@@ -274,14 +283,17 @@ public class AppFrame extends JFrame {
 			storeIdLbl = new JLabel("StoreID");
 			addPanel.add(storeIdLbl);
 		
-			textField = new JTextField();
-			addPanel.add(textField);
-			textField.setColumns(10);
+			storeIdTxtField = new JTextField();
+			addPanel.add(storeIdTxtField);
+			storeIdTxtField.setColumns(10);
 		
 			addEmployeeBtn = new JButton("Add");
 			addEmployeeBtn.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					
+					employee.addEmployee("hi", "hi", "hi", "hi", 12);
+//					employee.addEmployee(firstNameTxtField.getText().toString(), lastNameTxtField.getText().toString(),
+//							jobTitleTxtField.getText().toString(), dobTxtField.getText().toString(), 
+//							Integer.parseInt(storeIdTxtField.getText()));
 				}
 			});
 			addPanel.add(addEmployeeBtn);

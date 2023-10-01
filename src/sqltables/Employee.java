@@ -41,7 +41,7 @@ public class Employee {
 			"CREATE TABLE Employee ("
 			+ "Id  int not null primary key "
 			+ "GENERATED ALWAYS AS IDENTITY "
-			+ "(START WITH 100, INCREMENT BY 1),"
+			+ "(START WITH 100, INCREMENT BY 1) PERSISTED,"
 			+ "FirstName varchar(255),"
 			+ "LastName varchar(255),"
 			+ "JobTitle varchar(255),"
@@ -189,16 +189,16 @@ public class Employee {
 	 * 
 	 * @author Edwin Casady
 	 */
-		public static void addEmployee(String fName, String LName, String title, String dob, int storeID) {
+		public void addEmployee(String fName, String LName, String title, String dob, int storeID) {
 
 		try {
 			Connection connection = DriverManager.getConnection("jdbc:derby:FirstDatabase;create=true");
 			PreparedStatement prep = connection.prepareStatement(insertData);
-			prep.setString(1, fName);
-			prep.setString(2, LName);
-			prep.setString(3, title);
-			prep.setString(4, dob);
-			prep.setInt(5, storeID);
+			prep.setString(2, fName);
+			prep.setString(3, LName);
+			prep.setString(4, title);
+			prep.setString(5, dob);
+			prep.setInt(6, storeID);
 
 			int success = prep.executeUpdate();
 
