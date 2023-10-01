@@ -106,7 +106,7 @@ public class Store {
 	{
 		try {
 		statement.execute(createTable);
-		resultSet = statement.executeQuery(Employee.selectAll);
+		resultSet = statement.executeQuery(selectAll);
 		}catch(SQLException e)
 		{
 			e.printStackTrace();

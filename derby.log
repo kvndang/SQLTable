@@ -1,13 +1,13 @@
 ----------------------------------------------------------------
-Sat Sep 30 20:31:58 MDT 2023:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.1.3 - (1557168): instance a816c00e-018a-e914-05bd-00000750c9f0 
-on database directory /Users/montemclaws/Documents/GitHub/SQLTable/FirstDatabase with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@42110406 
-Loaded from file:/Users/montemclaws/Documents/GitHub/SQLTable/lib/derby.jar
-java.vendor=Eclipse Adoptium
-java.runtime.version=17.0.3+7
-user.dir=/Users/montemclaws/Documents/GitHub/SQLTable
-os.name=Mac OS X
-os.arch=aarch64
-os.version=12.5
+Sat Sep 30 21:55:43 MDT 2023:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.1.3 - (1557168): instance a816c00e-018a-e960-b11f-00001f500448 
+on database directory C:\Users\Kevin\eclipse-workspace\SQLTables\FirstDatabase with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@c387f44 
+Loaded from file:/C:/Users/Kevin/eclipse-workspace/SQLTables/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=18.0.2.1+1-1
+user.dir=C:\Users\Kevin\eclipse-workspace\SQLTables
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''

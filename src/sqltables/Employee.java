@@ -1,8 +1,6 @@
 package sqltables;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
+
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -147,7 +145,12 @@ public class Employee {
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+	 * 
+	 * @param query
+	 * @return Returns a DefaultTableModel for use with JTable
+	 * @author Monte
+	 */
 	public DefaultTableModel getTableModel(String query) {
 	    try {
 	        DefaultTableModel model = new DefaultTableModel();
@@ -178,7 +181,7 @@ public class Employee {
 	    }
 	}
 
-			/**
+	 /**
 	 * Adds a new employee to the Employee Database
 	 * 
 	 * @param fName   - First Name
@@ -200,7 +203,11 @@ public class Employee {
 				e.printStackTrace();
 			}
 		}
-		
+		/**
+		 * Removes an employee from the Employee SQL Table
+		 * @param id
+		 * @author James
+		 */
 		public void removeEmployee(int id) {
 			String s = String.format("DELETE FROM Employee WHERE Id = %d", id);
 		try {
@@ -212,6 +219,11 @@ public class Employee {
 			}
 		}
 		
+		/**
+		 * Updates an employee from the Employee SQL Table
+		 * @param id
+		 * @author James
+		 */
 		public void updateEmployee(String fName, String lName, String title, String dob, int storeID, int id) {
 			String s = String.format("UPDATE Employee SET FirstName = '%s', LastName = '%s', JobTitle = '%s',"
 					+ " DOB = '%s', StoreID = %d WHERE Id = %d", fName, lName, title, dob, storeID, id);
