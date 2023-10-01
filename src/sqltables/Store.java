@@ -46,6 +46,86 @@ public class Store {
 	
 	public static final String dropTable =
 			"DROP TABLE Store";
+	
+	public void printTableData() throws SQLException {
+		resultSet = statement.executeQuery(selectAll);
+		//print header
+		int dashCount = 0;
+		for(int i = 1; i <= metaData.getColumnCount(); i++) {
+			System.out.print(metaData.getColumnLabel(i) + " ");
+			dashCount += metaData.getColumnLabel(i).length() + 1;
+		}
+		System.out.println();
+		System.out.println("-".repeat(--dashCount));
+		
+		//print data
+		while(resultSet.next()) {
+			for(int i = 1; i<= metaData.getColumnCount(); i++ ) {
+				System.out.printf("%-" + (metaData.getColumnLabel(i).toString().length()+1) +
+						"s", resultSet.getObject(i) + " ");
+			}
+			System.out.println();
+		}
+		}
+	
+	/**
+	 * Returns the amount of columns in the Employee database. 
+	 * @return
+	 * @author Kevin
+	 */ 
+	public int getColumnCount()
+	{
+		try {
+		return metaData.getColumnCount();
+		}catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	/**
+	 * Java method for executing the dropTable SQL method.
+	 * @author Kevin
+	 */
+	public void dropTable()
+	{
+		try {
+		statement.execute(dropTable);
+		}catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Java method for executing the createTable SQL method.
+	 * @author Kevin
+	 */
+	public void createTable()
+	{
+		try {
+		statement.execute(createTable);
+		resultSet = statement.executeQuery(Employee.selectAll);
+		}catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Java method for executing the insertData SQL method.
+	 * @author Kevin
+	 */
+	public void insertData()
+	{
+		try {
+		statement.execute(insertData);
+		}catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
 	/**
 	 * method to add a new store to the Stores database.
 	 *
@@ -57,28 +137,16 @@ public class Store {
 	 *
 	 * @author Edwin
 	 */
-	public static void newStore(int storeID, String city, int pharmacy, int zip) {
-	try {
-	Connection connection = DriverManager.getConnection(databaseURL);
-	PreparedStatement prep = connection.prepareStatement(insertData);
-	prep.setInt(1, storeID);
-	prep.setString(2, city);
-	prep.setInt(3, pharmacy);
-	prep.setInt(4, zip);
-
-	int success = prep.executeUpdate();
-
-	if (success > 0)
-	System.out.println("New Store added! ");
-	else
-	System.out.println("Bad or incomplete data. Please retry adding new Store.");
-
-	prep.close();
-	connection.close();
-
-	} catch (SQLException e) {
-	System.out.println("There was a problem adding a new store to the Store Database.");
-	}
-	}
+	public void addStore(int storeID, String city, int pharmacy, int zip) {
+		String s = String.format("INSERT INTO Store (Id, City, Pharmacy, Zipcode) VALUES "
+				+ "(%d,'%s', %d, %d)", storeID, city, pharmacy, zip);
+		try {
+		statement.execute(s);
+		}catch(SQLException e)
+		{
+			System.out.println("SQLException");
+			e.printStackTrace();
+		}
+}
 	
 }

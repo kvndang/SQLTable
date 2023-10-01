@@ -76,7 +76,7 @@ public class AppFrame extends JFrame {
 	private JButton removeBtn;
 	private JButton prevBtn;
 	private JPanel tablePanel;
-	
+	private Store store;
 	
 	/**
 	 * Launch the application.
@@ -107,6 +107,9 @@ public class AppFrame extends JFrame {
 				connection = DriverManager.getConnection(databaseURL);
 				statement = connection.createStatement();
 				employee = new Employee(statement);
+				store = new Store(statement);
+				store.addStore(321, "West Valley", 0, 94118);
+				store.printTableData();
 			}
 					
 			catch(SQLException e)
@@ -142,12 +145,8 @@ public class AppFrame extends JFrame {
 		editPanel.setLayout(new GridLayout(3, 1, 0, 0));
 		
 			createAddPanel();
-		
-			createUpdatePanel();
-		
-		
+			createUpdatePanel();	
 			createRemovePanel();
-		
 		
 	}
 
@@ -346,7 +345,7 @@ public class AppFrame extends JFrame {
 		nextButtonPanel.add(nextBtn);
 	}
 
-
+	
 
 	
 

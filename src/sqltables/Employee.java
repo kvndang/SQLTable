@@ -189,6 +189,7 @@ public class Employee {
 	 * 
 	 * @author Edwin Casady
 	 */
+<<<<<<< HEAD
 		public void addEmployee(String fName, String LName, String title, String dob, int storeID) {
 
 		try {
@@ -214,6 +215,18 @@ public class Employee {
 			System.out.println("There was a problem adding a new employee to the Employee Database.");
 			e.printStackTrace();
 		}
+=======
+		public void addEmployee(String fName, String lName, String title, String dob, int storeID) {
+			String s = String.format("INSERT INTO Employee (FirstName, LastName, JobTitle, DOB, StoreID) VALUES "
+					+ "('%s','%s', '%s', '%s', %d)", fName, lName, title, dob, storeID);
+			try {
+			statement.execute(s);
+			}catch(SQLException e)
+			{
+				System.out.println("SQLException");
+				e.printStackTrace();
+			}
+>>>>>>> a4ec57e7b228422eaba6f9bda9455a036d1452e9
 	}
 
 	}
