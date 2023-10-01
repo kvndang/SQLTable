@@ -108,7 +108,6 @@ public class AppFrame extends JFrame {
 				statement = connection.createStatement();
 				employee = new Employee(statement);
 				store = new Store(statement);
-				store.addStore(321, "West Valley", 0, 94118);
 				store.printTableData();
 			}
 					
@@ -289,7 +288,6 @@ public class AppFrame extends JFrame {
 			addEmployeeBtn = new JButton("Add");
 			addEmployeeBtn.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					employee.addEmployee("hi", "hi", "hi", "hi", 12);
 //					employee.addEmployee(firstNameTxtField.getText().toString(), lastNameTxtField.getText().toString(),
 //							jobTitleTxtField.getText().toString(), dobTxtField.getText().toString(), 
 //							Integer.parseInt(storeIdTxtField.getText()));
