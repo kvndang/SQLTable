@@ -1,6 +1,7 @@
 package sqltables;
 
 
+import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -57,7 +58,6 @@ public class Employee {
 	public static final String selectAll =
 			"SELECT * FROM Employee";
 	
-	
 	public static final String dropTable =
 			"DROP TABLE Employee";
 	
@@ -88,11 +88,49 @@ public class Employee {
 		}
 	
 	/**
+	 * overloaded method to print a row from the table based on 
+	 * the ResultSet object.
+	 * 
+	 * @ author Edwin 
+	 * 
+	 * @param resultset - should be an identified row fron the table
+	 */
+	public void printTableData(ResultSet resultset) {
+		//print header
+				int dashCount = 0;
+				try {
+					for(int i = 1; i <= metaData.getColumnCount(); i++) {
+						System.out.print(metaData.getColumnLabel(i) + " ");
+						dashCount += metaData.getColumnLabel(i).length() + 1;
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				System.out.println();
+				System.out.println("-".repeat(--dashCount));
+				
+				//print data
+				try {
+					while(resultSet.next()) {
+						for(int i = 1; i<= metaData.getColumnCount(); i++ ) {
+							System.out.printf("%-" + (metaData.getColumnLabel(i).toString().length()+1) +
+									"s", resultSet.getObject(i) + " ");
+						}
+						System.out.println();
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	}
+	
+	/**
 	 * Returns the amount of columns in the Employee database. 
 	 * @return
 	 * @author Kevin
 	 */ 
-	public int getColumnCount()
+ 	public int getColumnCount()
 	{
 		try {
 		return metaData.getColumnCount();
@@ -181,7 +219,7 @@ public class Employee {
 	    }
 	}
 
-	 /**
+	/**
 	 * Adds a new employee to the Employee Database
 	 * 
 	 * @param fName   - First Name
@@ -192,39 +230,60 @@ public class Employee {
 	 * 
 	 * @author Edwin Casady
 	 */
-		public void addEmployee(String fName, String lName, String title, String dob, int storeID) {
-			String s = String.format("INSERT INTO Employee (FirstName, LastName, JobTitle, DOB, StoreID) VALUES "
-					+ "('%s','%s', '%s', '%s', %d)", fName, lName, title, dob, storeID);
-			try {
-			statement.execute(s);
-			}catch(SQLException e)
-			{
-				System.out.println("SQLException");
-				e.printStackTrace();
-			}
-		}
-		/**
-		 * Removes an employee from the Employee SQL Table
-		 * @param id
-		 * @author James
-		 */
-		public void removeEmployee(int id) {
-			String s = String.format("DELETE FROM Employee WHERE Id = %d", id);
+	public void addEmployee(String fName, String lName, String title, String dob, int storeID) {
+		String s = String.format("INSERT INTO Employee (FirstName, LastName, JobTitle, DOB, StoreID) VALUES "
+				+ "('%s','%s', '%s', '%s', %d)", fName, lName, title, dob, storeID);
 		try {
 			statement.execute(s);
-			}catch(SQLException e)
-			{
-				System.out.println("SQLException");
-				e.printStackTrace();
-			}
+		} catch (SQLException e) {
+			System.out.println("SQLException");
+			e.printStackTrace();
 		}
-		
-		/**
-		 * Updates an employee from the Employee SQL Table
-		 * @param id
-		 * @author James
-		 */
-		public void updateEmployee(String fName, String lName, String title, String dob, int storeID, int id) {
+	}
+
+	public String[] getEmployeeInfo(int idNum	) {
+		String row = String.format("SELECT * FROM Employee WHERE Id=%d", idNum);
+		String [] infos = new String [6] ;
+		try {
+			resultSet = statement.executeQuery(row);
+						
+			if (resultSet.next()) {
+				for (int i = 0; i < infos.length; i++) {
+					infos[i] = resultSet.getString(i + 1);
+				}
+			}
+			return infos;
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}return null;
+	}
+	
+	
+	/**
+	 * Removes an employee from the Employee SQL Table
+	 * 
+	 * @param id
+	 * @author James
+	 */
+	public void removeEmployee(int id) {
+		String s = String.format("DELETE FROM Employee WHERE Id = %d", id);
+		try {
+			statement.execute(s);
+		} catch (SQLException e) {
+			System.out.println("SQLException");
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Updates an employee from the Employee SQL Table
+	 * 
+	 * @param id
+	 * @author James
+	 */
+	public void updateEmployee(String fName, String lName, String title, String dob, int storeID, int id) {
 			String s = String.format("UPDATE Employee SET FirstName = '%s', LastName = '%s', JobTitle = '%s',"
 					+ " DOB = '%s', StoreID = %d WHERE Id = %d", fName, lName, title, dob, storeID, id);
 		try {

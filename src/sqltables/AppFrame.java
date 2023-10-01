@@ -20,6 +20,7 @@ import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 public class AppFrame extends JFrame {
@@ -32,6 +33,9 @@ public class AppFrame extends JFrame {
 
 	private static final String databaseURL = "jdbc:derby:FirstDatabase;create=true";
 	private Employee employee;
+	
+	private static Connection connection; // = null;
+	private static Statement statement; // = null;
 
 	private String query = Employee.selectAll;
 	private JTable table;
@@ -43,7 +47,6 @@ public class AppFrame extends JFrame {
 	private JPanel addPanel;
 	private JPanel updatePanel;
 	private JLabel addLbl;
-	private JLabel updateLbl;
 	private JLabel removeLbl;
 	private JLabel firstNameLbl;
 	private JTextField firstNameTxtField;
@@ -56,23 +59,14 @@ public class AppFrame extends JFrame {
 	private JLabel storeIdLbl;
 	private JTextField storeIdTxtField;
 	private JButton addEmployeeBtn;
-	private JLabel updateFirstNameLbl;
-	private JTextField updateFirstNameTxtField;
-	private JLabel updateLastNameLbl;
-	private JTextField updateLastNameTxtField;
-	private JLabel updateJobTitleLbl;
-	private JTextField updateJobTitleTxtField;
-	private JLabel updateDOBLbl;
-	private JTextField updateDOBTxtField;
-	private JLabel updateStoreIDLbl;
-	private JTextField updateStoreIDTxtField;
-	private JButton updateBtn;
 	private JLabel removeIDLbl;
 	private JTextField removeIDTxtField;
 	private JButton removeBtn;
 	private JButton prevBtn;
 	private JPanel tablePanel;
 	private Store store;
+	private JTextField txtEmployeeid;
+	private JButton btnUpdate;
 
 	/**
 	 * Launch the application.
@@ -96,8 +90,8 @@ public class AppFrame extends JFrame {
 	 */
 	public AppFrame() {
 
-		Connection connection = null;
-		Statement statement = null;
+		 connection = null;
+		statement = null;
 
 		try {
 			connection = DriverManager.getConnection(databaseURL);
@@ -188,65 +182,23 @@ public class AppFrame extends JFrame {
 	private void createUpdatePanel() {
 		updatePanel = new JPanel();
 		editPanel.add(updatePanel);
-
-		updateLbl = new JLabel("Update Employee:");
-		updatePanel.add(updateLbl);
-
-		updateFirstNameLbl = new JLabel("First Name");
-		updatePanel.add(updateFirstNameLbl);
-
-		updateFirstNameTxtField = new JTextField();
-		updatePanel.add(updateFirstNameTxtField);
-		updateFirstNameTxtField.setColumns(10);
-
-		updateLastNameLbl = new JLabel("Last Name");
-		updatePanel.add(updateLastNameLbl);
-
-		updateLastNameTxtField = new JTextField();
-		updatePanel.add(updateLastNameTxtField);
-		updateLastNameTxtField.setColumns(10);
-
-		updateJobTitleLbl = new JLabel("Job Title");
-		updatePanel.add(updateJobTitleLbl);
-
-		updateJobTitleTxtField = new JTextField();
-		updatePanel.add(updateJobTitleTxtField);
-		updateJobTitleTxtField.setColumns(10);
-
-		updateDOBLbl = new JLabel("Date Of Birth");
-		updatePanel.add(updateDOBLbl);
-
-		updateDOBTxtField = new JTextField();
-		updatePanel.add(updateDOBTxtField);
-		updateDOBTxtField.setColumns(10);
-
-		updateStoreIDLbl = new JLabel("Store ID");
-		updatePanel.add(updateStoreIDLbl);
-
-		updateStoreIDTxtField = new JTextField();
-		updatePanel.add(updateStoreIDTxtField);
-		updateStoreIDTxtField.setColumns(10);
-
-		updateBtn = new JButton("UPDATE");
-		updateBtn.addActionListener(new ActionListener() {
+		
+		txtEmployeeid = new JTextField();
+		txtEmployeeid.setText("employeeID");
+		updatePanel.add(txtEmployeeid);
+		txtEmployeeid.setColumns(10);
+		
+		btnUpdate = new JButton("Update");
+		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String str = JOptionPane.showInputDialog("Enter Employee ID");
-				int id = Integer.parseInt(str);
-				int storeID = Integer.parseInt(updateStoreIDTxtField.getText());
-
-				employee.updateEmployee(updateFirstNameTxtField.getText(), updateLastNameTxtField.getText(),
-						updateJobTitleTxtField.getText(), updateDOBTxtField.getText(), storeID, id);
-
-				try {
-					employee.printTableData();
-					System.out.println();
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				}
+			
+				int employeeID = Integer.parseInt(txtEmployeeid.getText());
+				String []infos = employee.getEmployeeInfo(employeeID);
+				new UpdateFrame(infos);
+				
 			}
 		});
-
-		updatePanel.add(updateBtn);
+		updatePanel.add(btnUpdate);
 
 	}
 
@@ -358,4 +310,103 @@ public class AppFrame extends JFrame {
 		nextButtonPanel.add(nextBtn);
 	}
 
+	public class UpdateFrame extends JFrame {
+
+		
+		private JPanel contentPane;
+		private JTextField txtFname;
+		private JTextField txtLname;
+		private JTextField txtPosition;
+		private JTextField txtDob;
+		private JTextField txtStoreid;
+
+		/**
+		 * Launch the application.
+		 */
+
+
+		/**
+		 * Create the frame.
+		 */
+		public UpdateFrame(String[] infos) {
+			setTitle("Update Employee Information");
+			//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			setBounds(100, 100, 450, 300);
+			contentPane = new JPanel();
+			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+			
+			setContentPane(contentPane);
+			
+//			for(String s : infos) {
+//				System.out.println(s);
+//			}
+			
+			int id = Integer.parseInt(infos[0]);
+			
+			JPanel contentPnl = new JPanel();
+			contentPane.add(contentPnl);
+			contentPnl.setLayout(new GridLayout(0, 2, 0, 0));
+			
+			JLabel lblFirstName = new JLabel("First Name: ");
+			contentPane.add(lblFirstName);
+			
+			txtFname = new JTextField();
+			txtFname.setText(infos[1]);
+			contentPane.add(txtFname);
+			txtFname.setColumns(10);
+			
+			JLabel lblLastName = new JLabel("Last Name: ");
+			contentPane.add(lblLastName);
+			
+			txtLname = new JTextField();
+			txtLname.setText(infos[2]);
+			contentPane.add(txtLname);
+			txtLname.setColumns(10);
+			
+			JLabel lblPosition = new JLabel("Position: ");
+			contentPane.add(lblPosition);
+			
+			txtPosition = new JTextField();
+			txtPosition.setText(infos[3]);
+			contentPane.add(txtPosition);
+			txtPosition.setColumns(10);
+			
+			JLabel lblDateOfBirth = new JLabel("Date Of Birth:");
+			contentPane.add(lblDateOfBirth);
+			
+			txtDob = new JTextField();
+			txtDob.setText(infos[4]);
+			contentPane.add(txtDob);
+			txtDob.setColumns(10);
+			
+			JLabel lblStoreId = new JLabel("Store ID");
+			contentPane.add(lblStoreId);
+			
+			txtStoreid = new JTextField();
+			txtStoreid.setText(infos[5]);
+			contentPane.add(txtStoreid);
+			txtStoreid.setColumns(10);
+			
+			
+			
+		
+			
+			JButton updateBtn = new JButton("UPDATE");
+			updateBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+//				
+					
+					employee.updateEmployee(txtFname.getText(), txtLname.getText(),
+							txtPosition.getText(), txtDob.getText(), Integer.parseInt(txtStoreid.getText()), id);
+					
+					dispose();
+				}
+			});
+			contentPane.add(updateBtn);
+			
+			setVisible(true);
+		}
+		
+	}
+	
 }
