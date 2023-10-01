@@ -137,28 +137,16 @@ public class Store {
 	 *
 	 * @author Edwin
 	 */
-	public static void newStore(int storeID, String city, int pharmacy, int zip) {
-	try {
-	Connection connection = DriverManager.getConnection(databaseURL);
-	PreparedStatement prep = connection.prepareStatement(insertData);
-	prep.setInt(1, storeID);
-	prep.setString(2, city);
-	prep.setInt(3, pharmacy);
-	prep.setInt(4, zip);
-
-	int success = prep.executeUpdate();
-
-	if (success > 0)
-	System.out.println("New Store added! ");
-	else
-	System.out.println("Bad or incomplete data. Please retry adding new Store.");
-
-	prep.close();
-	connection.close();
-
-	} catch (SQLException e) {
-	System.out.println("There was a problem adding a new store to the Store Database.");
-	}
-	}
+	public void addStore(int storeID, String city, int pharmacy, int zip) {
+		String s = String.format("INSERT INTO Store (Id, City, Pharmacy, Zipcode) VALUES "
+				+ "(%d,'%s', %d, %d)", storeID, city, pharmacy, zip);
+		try {
+		statement.execute(s);
+		}catch(SQLException e)
+		{
+			System.out.println("SQLException");
+			e.printStackTrace();
+		}
+}
 	
 }

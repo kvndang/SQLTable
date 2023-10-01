@@ -189,31 +189,16 @@ public class Employee {
 	 * 
 	 * @author Edwin Casady
 	 */
-		public static void addEmployee(String fName, String LName, String title, String dob, int storeID) {
-
-		try {
-			Connection connection = DriverManager.getConnection("jdbc:derby:FirstDatabase;create=true");
-			PreparedStatement prep = connection.prepareStatement(insertData);
-			prep.setString(1, fName);
-			prep.setString(2, LName);
-			prep.setString(3, title);
-			prep.setString(4, dob);
-			prep.setInt(5, storeID);
-
-			int success = prep.executeUpdate();
-
-			if (success > 0)
-			System.out.println("New Employee successfully added!");
-		else
-			System.out.println("Bad or incomplete data. Please retry adding new Employee");
-
-			prep.close();
-			connection.close();
-
-		} catch (SQLException e) {
-			System.out.println("There was a problem adding a new employee to the Employee Database.");
-			e.printStackTrace();
-		}
+		public void addEmployee(String fName, String lName, String title, String dob, int storeID) {
+			String s = String.format("INSERT INTO Employee (FirstName, LastName, JobTitle, DOB, StoreID) VALUES "
+					+ "('%s','%s', '%s', '%s', %d)", fName, lName, title, dob, storeID);
+			try {
+			statement.execute(s);
+			}catch(SQLException e)
+			{
+				System.out.println("SQLException");
+				e.printStackTrace();
+			}
 	}
 
 	}
