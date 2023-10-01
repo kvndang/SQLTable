@@ -76,10 +76,6 @@ public class AppFrame extends JFrame {
 	private JButton removeBtn;
 	private JButton prevBtn;
 	private JPanel tablePanel;
-	private JTable employeeTable;
-	
-
-	
 	
 	
 	/**
@@ -97,8 +93,6 @@ public class AppFrame extends JFrame {
 				}
 			}
 		});
-		
-		
 	}
 
 	/**
@@ -120,8 +114,6 @@ public class AppFrame extends JFrame {
 				System.out.println("Something went wrong accessing SQL.");
 				e.printStackTrace();
 			}
-		
-		
 		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 1000, 1200);

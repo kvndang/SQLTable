@@ -3,11 +3,29 @@ package sqltables;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Store {
-	
+	private Statement statement;
+	private ResultSet resultSet;
+	private ResultSetMetaData metaData;
 	private static final String databaseURL = "jdbc:derby:FirstDatabase;create=true";
+	
+	public Store(Statement statement)
+	{
+		this.statement = statement;
+		try {
+		resultSet = statement.executeQuery(selectAll);
+		metaData = resultSet.getMetaData();
+		}catch(SQLException e)
+		{
+			System.out.println("Something went wrong accessing SQL");
+		}
+		
+	}
 	
 	public static final String createTable =
 			"CREATE TABLE Store ("
@@ -62,4 +80,5 @@ public class Store {
 	System.out.println("There was a problem adding a new store to the Store Database.");
 	}
 	}
+	
 }

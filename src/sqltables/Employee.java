@@ -69,7 +69,7 @@ public class Employee {
 	 * @throws SQLException
 	 */
 	public void printTableData() throws SQLException {
-		resultSet = statement.executeQuery(Employee.selectAll);
+		resultSet = statement.executeQuery(selectAll);
 		//print header
 		int dashCount = 0;
 		for(int i = 1; i <= metaData.getColumnCount(); i++) {
