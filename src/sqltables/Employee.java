@@ -199,6 +199,28 @@ public class Employee {
 				System.out.println("SQLException");
 				e.printStackTrace();
 			}
-	}
-
+		}
+		
+		public void removeEmployee(int id) {
+			String s = String.format("DELETE FROM Employee WHERE Id = %d", id);
+		try {
+			statement.execute(s);
+			}catch(SQLException e)
+			{
+				System.out.println("SQLException");
+				e.printStackTrace();
+			}
+		}
+		
+		public void updateEmployee(String fName, String lName, String title, String dob, int storeID, int id) {
+			String s = String.format("UPDATE Employee SET FirstName = '%s', LastName = '%s', JobTitle = '%s',"
+					+ " DOB = '%s', StoreID = %d WHERE Id = %d", fName, lName, title, dob, storeID, id);
+		try {
+			statement.execute(s);
+			}catch(SQLException e)
+			{
+				System.out.println("SQLException");
+				e.printStackTrace();
+			}
+		}
 	}
