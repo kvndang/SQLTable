@@ -147,6 +147,29 @@ public class Store {
 			System.out.println("SQLException");
 			e.printStackTrace();
 		}
-}
+	}
+	
+	public void removeStore(int storeID) {
+		String s = String.format("DELETE FROM Store WHERE Id = %d", storeID);
+	try {
+		statement.execute(s);
+		}catch(SQLException e)
+		{
+			System.out.println("SQLException");
+			e.printStackTrace();
+		}
+	}
+	
+	public void updateStore(int storeID, String city, int pharmacy, int zip) {
+		String s = String.format("UPDATE Store SET Id = %d, city = '%s',"
+				+ " pharmacy = %d, zip = %d WHERE Id = %d", storeID, city, pharmacy, zip, storeID);
+	try {
+		statement.execute(s);
+		}catch(SQLException e)
+		{
+			System.out.println("SQLException");
+			e.printStackTrace();
+		}
+	}
 	
 }

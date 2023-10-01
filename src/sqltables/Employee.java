@@ -189,33 +189,7 @@ public class Employee {
 	 * 
 	 * @author Edwin Casady
 	 */
-<<<<<<< HEAD
-		public void addEmployee(String fName, String LName, String title, String dob, int storeID) {
 
-		try {
-			Connection connection = DriverManager.getConnection("jdbc:derby:FirstDatabase;create=true");
-			PreparedStatement prep = connection.prepareStatement(insertData);
-			prep.setString(2, fName);
-			prep.setString(3, LName);
-			prep.setString(4, title);
-			prep.setString(5, dob);
-			prep.setInt(6, storeID);
-
-			int success = prep.executeUpdate();
-
-			if (success > 0)
-			System.out.println("New Employee successfully added!");
-		else
-			System.out.println("Bad or incomplete data. Please retry adding new Employee");
-
-			prep.close();
-			connection.close();
-
-		} catch (SQLException e) {
-			System.out.println("There was a problem adding a new employee to the Employee Database.");
-			e.printStackTrace();
-		}
-=======
 		public void addEmployee(String fName, String lName, String title, String dob, int storeID) {
 			String s = String.format("INSERT INTO Employee (FirstName, LastName, JobTitle, DOB, StoreID) VALUES "
 					+ "('%s','%s', '%s', '%s', %d)", fName, lName, title, dob, storeID);
@@ -226,7 +200,28 @@ public class Employee {
 				System.out.println("SQLException");
 				e.printStackTrace();
 			}
->>>>>>> a4ec57e7b228422eaba6f9bda9455a036d1452e9
-	}
-
+		}
+		
+		public void removeEmployee(int id) {
+			String s = String.format("DELETE FROM Employee WHERE Id = %d", id);
+		try {
+			statement.execute(s);
+			}catch(SQLException e)
+			{
+				System.out.println("SQLException");
+				e.printStackTrace();
+			}
+		}
+		
+		public void updateEmployee(String fName, String lName, String title, String dob, int storeID, int id) {
+			String s = String.format("UPDATE Employee SET FirstName = '%s', LastName = '%s', JobTitle = '%s',"
+					+ " DOB = '%s', StoreID = %d WHERE Id = %d", fName, lName, title, dob, storeID, id);
+		try {
+			statement.execute(s);
+			}catch(SQLException e)
+			{
+				System.out.println("SQLException");
+				e.printStackTrace();
+			}
+		}
 	}
