@@ -46,6 +46,86 @@ public class Store {
 	
 	public static final String dropTable =
 			"DROP TABLE Store";
+	
+	public void printTableData() throws SQLException {
+		resultSet = statement.executeQuery(selectAll);
+		//print header
+		int dashCount = 0;
+		for(int i = 1; i <= metaData.getColumnCount(); i++) {
+			System.out.print(metaData.getColumnLabel(i) + " ");
+			dashCount += metaData.getColumnLabel(i).length() + 1;
+		}
+		System.out.println();
+		System.out.println("-".repeat(--dashCount));
+		
+		//print data
+		while(resultSet.next()) {
+			for(int i = 1; i<= metaData.getColumnCount(); i++ ) {
+				System.out.printf("%-" + (metaData.getColumnLabel(i).toString().length()+1) +
+						"s", resultSet.getObject(i) + " ");
+			}
+			System.out.println();
+		}
+		}
+	
+	/**
+	 * Returns the amount of columns in the Employee database. 
+	 * @return
+	 * @author Kevin
+	 */ 
+	public int getColumnCount()
+	{
+		try {
+		return metaData.getColumnCount();
+		}catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	/**
+	 * Java method for executing the dropTable SQL method.
+	 * @author Kevin
+	 */
+	public void dropTable()
+	{
+		try {
+		statement.execute(dropTable);
+		}catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Java method for executing the createTable SQL method.
+	 * @author Kevin
+	 */
+	public void createTable()
+	{
+		try {
+		statement.execute(createTable);
+		resultSet = statement.executeQuery(Employee.selectAll);
+		}catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Java method for executing the insertData SQL method.
+	 * @author Kevin
+	 */
+	public void insertData()
+	{
+		try {
+		statement.execute(insertData);
+		}catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
 	/**
 	 * method to add a new store to the Stores database.
 	 *

@@ -76,7 +76,7 @@ public class AppFrame extends JFrame {
 	private JButton removeBtn;
 	private JButton prevBtn;
 	private JPanel tablePanel;
-	
+	private Store store;
 	
 	/**
 	 * Launch the application.
@@ -107,6 +107,8 @@ public class AppFrame extends JFrame {
 				connection = DriverManager.getConnection(databaseURL);
 				statement = connection.createStatement();
 				employee = new Employee(statement);
+				store = new Store(statement);
+				store.printTableData();
 			}
 					
 			catch(SQLException e)
