@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -22,6 +23,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JComboBox;
 
 public class AppFrame extends JFrame {
 
@@ -67,6 +69,13 @@ public class AppFrame extends JFrame {
 	private Store store;
 	private JTextField txtEmployeeid;
 	private JButton btnUpdate;
+	private JPanel sortPanel;
+	private JComboBox<String> sortOptions;
+	private JButton sortBtn;
+	private JPanel filterPanel;
+	private JComboBox<String> filterOptions;
+	private JTextField filterTxtField;
+	private JButton filterBtn;
 
 	/**
 	 * Launch the application.
@@ -270,7 +279,9 @@ public class AppFrame extends JFrame {
 
 		createNextPanel();
 
+		createFilterPanel();
 		createNextBtn();
+		createSortPanel();
 
 		table = new JTable();
 
@@ -296,8 +307,7 @@ public class AppFrame extends JFrame {
 	private void createEmployeeTable() {
 
 		tablePanel.add(new JScrollPane(table));
-		;
-
+		
 	}
 
 	private void createNextBtn() {
@@ -308,6 +318,57 @@ public class AppFrame extends JFrame {
 			}
 		});
 		nextButtonPanel.add(nextBtn);
+	}
+	private void createSortPanel() {
+		sortPanel = new JPanel();
+		nextButtonPanel.add(sortPanel);
+		createSortBtns();
+	}
+	private void createSortBtns(){
+		sortOptions = new JComboBox<String>();
+		sortPanel.add(sortOptions);
+		sortOptions.addItem("FirstName");
+		sortOptions.addItem("LastName");
+		sortOptions.addItem("JobTitle");
+		sortOptions.addItem("DOB");
+		sortBtn = new JButton("Sort");
+		sortBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ResultSet resultset = employee.sortEmployee(sortOptions.getSelectedItem().toString());
+				
+				employee.printTableData(resultset);
+				System.out.println();
+			}
+		});
+		sortPanel.add(sortBtn);
+	}
+	private void createFilterPanel() {
+		filterPanel = new JPanel();
+		nextButtonPanel.add(filterPanel);
+		createFilterBtns();
+	}
+	private void createFilterBtns(){
+		filterOptions = new JComboBox<String>();
+		filterOptions.addItem("FirstName");
+		filterOptions.addItem("LastName");
+		filterOptions.addItem("JobTitle");
+		filterOptions.addItem("DOB");
+		filterPanel.add(filterOptions);
+		
+		filterTxtField = new JTextField();
+		filterPanel.add(filterTxtField);
+		filterTxtField.setColumns(10);
+		
+		filterBtn = new JButton("Filter");
+		filterBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ResultSet resultset = employee.filterEmployee(filterOptions.getSelectedItem().toString(), filterTxtField.getText().toString());
+				
+				employee.printTableData(resultset);
+				System.out.println();
+			}
+		});
+		filterPanel.add(filterBtn);
 	}
 
 	public class UpdateFrame extends JFrame {

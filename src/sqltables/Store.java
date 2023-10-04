@@ -149,6 +149,12 @@ public class Store {
 		}
 	}
 	
+	/**
+	 * Removes a Store from the Store SQL Table
+	 * 
+	 * @param id
+	 * @author James
+	 */
 	public void removeStore(int storeID) {
 		String s = String.format("DELETE FROM Store WHERE Id = %d", storeID);
 	try {
@@ -160,6 +166,12 @@ public class Store {
 		}
 	}
 	
+	/**
+	 * Updates a Store from the Store SQL Table
+	 * 
+	 * @param id
+	 * @author James
+	 */
 	public void updateStore(int storeID, String city, int pharmacy, int zip) {
 		String s = String.format("UPDATE Store SET Id = %d, city = '%s',"
 				+ " pharmacy = %d, zip = %d WHERE Id = %d", storeID, city, pharmacy, zip, storeID);
@@ -167,6 +179,39 @@ public class Store {
 		statement.execute(s);
 		}catch(SQLException e)
 		{
+			System.out.println("SQLException");
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Sorts the Store SQL Table depending on the selection made by the button.
+	 * TODO only works for strings right now. Eventually need to figure out a way to incorporate integers.
+	 * @param selection
+	 * @author James
+	 */
+	public void sortStore(String selection) {
+		String s = String.format("SELECT * FROM Store ORDER BY '%s'", selection);
+		try {
+			statement.execute(s);
+		} catch(SQLException e) {
+			System.out.println("SQLException");
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Filters the Store SQL Table depending on the given columns name and the contents inside.
+	 * TODO only works for strings right now. Eventually need to figure out a way to incorporate integers.
+	 * @param name
+	 * @param sort
+	 * @author James
+	 */
+	public void filterStore(String name, String sort) {
+		String s = String.format("SELECT * FROM Store WHERE %s = '%s'", name, sort);
+		try {
+			statement.execute(s);
+		} catch(SQLException e) {
 			System.out.println("SQLException");
 			e.printStackTrace();
 		}
