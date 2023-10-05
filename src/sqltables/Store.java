@@ -1,8 +1,5 @@
 package sqltables;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -12,7 +9,6 @@ public class Store {
 	private Statement statement;
 	private ResultSet resultSet;
 	private ResultSetMetaData metaData;
-	private static final String databaseURL = "jdbc:derby:FirstDatabase;create=true";
 	
 	public Store(Statement statement)
 	{
@@ -191,16 +187,10 @@ public class Store {
 	 * @author James
 	 * @return 
 	 */
-	public ResultSet sortStore(String selection) {
+	public String sortStore(String selection) {
 		String s = String.format("SELECT * FROM Store "
 				+ "ORDER BY %s", selection);
-		try {
-			resultSet = statement.executeQuery(s);
-		} catch(SQLException e) {
-			System.out.println("SQLException");
-			e.printStackTrace();
-		}
-		return resultSet;
+		return s;
 	}
 	
 	/**
@@ -211,20 +201,14 @@ public class Store {
 	 * @author James
 	 * @return 
 	 */
-	public ResultSet filterStore(String name, String filter) {
+	public String filterStore(String name, String filter) {
 		String n;
 		if(name == "Id" || name == "Pharmacy")
 			 n = filter;
 		else
 			n = "'" + filter + "'";
 		String s = String.format("SELECT * FROM Store WHERE %s = %s", name, n);
-		try {
-			resultSet = statement.executeQuery(s);
-		} catch(SQLException e) {
-			System.out.println("SQLException");
-			e.printStackTrace();
-		}
-		return resultSet;
+		return s;
 	}
 	
 }
