@@ -186,35 +186,45 @@ public class Store {
 	
 	/**
 	 * Sorts the Store SQL Table depending on the selection made by the button.
-	 * TODO only works for strings right now. Eventually need to figure out a way to incorporate integers.
+	 * 
 	 * @param selection
 	 * @author James
+	 * @return 
 	 */
-	public void sortStore(String selection) {
-		String s = String.format("SELECT * FROM Store ORDER BY '%s'", selection);
+	public ResultSet sortStore(String selection) {
+		String s = String.format("SELECT * FROM Store "
+				+ "ORDER BY %s", selection);
 		try {
-			statement.execute(s);
+			resultSet = statement.executeQuery(s);
 		} catch(SQLException e) {
 			System.out.println("SQLException");
 			e.printStackTrace();
 		}
+		return resultSet;
 	}
 	
 	/**
 	 * Filters the Store SQL Table depending on the given columns name and the contents inside.
-	 * TODO only works for strings right now. Eventually need to figure out a way to incorporate integers.
+	 * 
 	 * @param name
-	 * @param sort
+	 * @param filter
 	 * @author James
+	 * @return 
 	 */
-	public void filterStore(String name, String sort) {
-		String s = String.format("SELECT * FROM Store WHERE %s = '%s'", name, sort);
+	public ResultSet filterStore(String name, String filter) {
+		String n;
+		if(name == "Id" || name == "Pharmacy")
+			 n = filter;
+		else
+			n = "'" + filter + "'";
+		String s = String.format("SELECT * FROM Store WHERE %s = %s", name, n);
 		try {
-			statement.execute(s);
+			resultSet = statement.executeQuery(s);
 		} catch(SQLException e) {
 			System.out.println("SQLException");
 			e.printStackTrace();
 		}
+		return resultSet;
 	}
 	
 }

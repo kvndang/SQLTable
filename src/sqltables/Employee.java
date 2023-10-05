@@ -283,10 +283,10 @@ public class Employee {
 	
 	/**
 	 * Sorts the Employee SQL Table depending on the selection made by the button.
-	 * TODO only works for strings right now. Eventually need to figure out a way to incorporate integers.
+	 * 
 	 * @param selection
+	 * @return resultSet
 	 * @author James
-	 * @return 
 	 */
 	public ResultSet sortEmployee(String selection) {
 		String s = String.format("SELECT * FROM Employee "
@@ -302,14 +302,19 @@ public class Employee {
 	
 	/**
 	 * Filters the Employee SQL Table depending on the given columns name and the contents inside.
-	 * TODO only works for strings right now. Eventually need to figure out a way to incorporate integers.
+	 * 
 	 * @param name
 	 * @param filter
+	 * @return resultSet
 	 * @author James
-	 * @return 
 	 */
 	public ResultSet filterEmployee(String name, String filter) {
-		String s = String.format("SELECT * FROM Employee WHERE %s = '%s'", name, filter);
+		String n;
+		if(name == "Id" || name == "StoreID")
+			 n = filter;
+		else
+			n = "'" + filter + "'";
+		String s = String.format("SELECT * FROM Employee WHERE %s = %s", name, n);
 		try {
 			resultSet = statement.executeQuery(s);
 		} catch(SQLException e) {

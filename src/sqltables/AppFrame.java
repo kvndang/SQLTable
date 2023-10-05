@@ -5,6 +5,7 @@ import java.awt.CardLayout;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -182,6 +183,7 @@ public class AppFrame extends JFrame {
 		prevBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cardLayout.previous(cards);
+				updateTablePanel();
 			}
 		});
 		removePanel.add(prevBtn);
@@ -193,7 +195,6 @@ public class AppFrame extends JFrame {
 		editPanel.add(updatePanel);
 		
 		txtEmployeeid = new JTextField();
-		txtEmployeeid.setText("employeeID");
 		updatePanel.add(txtEmployeeid);
 		txtEmployeeid.setColumns(10);
 		
@@ -300,15 +301,10 @@ public class AppFrame extends JFrame {
 		tablePanel = new JPanel();
 		mainPanel.add(tablePanel, BorderLayout.NORTH);
 
-		createEmployeeTable();
+		updateTablePanel();
 
 	}
 
-	private void createEmployeeTable() {
-
-		tablePanel.add(new JScrollPane(table));
-		
-	}
 
 	private void createNextBtn() {
 		nextBtn = new JButton("Modify");
@@ -331,12 +327,15 @@ public class AppFrame extends JFrame {
 		sortOptions.addItem("LastName");
 		sortOptions.addItem("JobTitle");
 		sortOptions.addItem("DOB");
+		sortOptions.addItem("Id");
+		sortOptions.addItem("StoreID");
 		sortBtn = new JButton("Sort");
 		sortBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ResultSet resultset = employee.sortEmployee(sortOptions.getSelectedItem().toString());
 				
 				employee.printTableData(resultset);
+				updateTablePanel();
 				System.out.println();
 			}
 		});
@@ -353,6 +352,8 @@ public class AppFrame extends JFrame {
 		filterOptions.addItem("LastName");
 		filterOptions.addItem("JobTitle");
 		filterOptions.addItem("DOB");
+		filterOptions.addItem("Id");
+		filterOptions.addItem("StoreID");
 		filterPanel.add(filterOptions);
 		
 		filterTxtField = new JTextField();
@@ -365,10 +366,19 @@ public class AppFrame extends JFrame {
 				ResultSet resultset = employee.filterEmployee(filterOptions.getSelectedItem().toString(), filterTxtField.getText().toString());
 				
 				employee.printTableData(resultset);
+				updateTablePanel();
 				System.out.println();
 			}
 		});
 		filterPanel.add(filterBtn);
+	}
+	
+	private void updateTablePanel() {
+		tablePanel.removeAll();
+		tablePanel.add(new JScrollPane(new JTable(employee.getTableModel(query))));
+		tablePanel.revalidate();
+		tablePanel.repaint();
+		tablePanel.setVisible(true);
 	}
 
 	public class UpdateFrame extends JFrame {
