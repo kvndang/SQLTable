@@ -35,7 +35,7 @@ public class AppFrame extends JFrame {
 
 	private static final String databaseURL = "jdbc:derby:FirstDatabase;create=true";
 	private Employee employee;
-	
+
 	private static Connection connection; // = null;
 	private static Statement statement; // = null;
 
@@ -76,6 +76,7 @@ public class AppFrame extends JFrame {
 	private JComboBox<String> filterOptions;
 	private JTextField filterTxtField;
 	private JButton filterBtn;
+	private JLabel lblUpdateEmployeeInfo;
 
 	/**
 	 * Launch the application.
@@ -99,7 +100,7 @@ public class AppFrame extends JFrame {
 	 */
 	public AppFrame() {
 
-		 connection = null;
+		connection = null;
 		statement = null;
 
 		try {
@@ -192,19 +193,22 @@ public class AppFrame extends JFrame {
 		updatePanel = new JPanel();
 		editPanel.add(updatePanel);
 		
+		lblUpdateEmployeeInfo = new JLabel("Update Employee Info: ");
+		updatePanel.add(lblUpdateEmployeeInfo);
+
 		txtEmployeeid = new JTextField();
 		txtEmployeeid.setText("employeeID");
 		updatePanel.add(txtEmployeeid);
 		txtEmployeeid.setColumns(10);
-		
+
 		btnUpdate = new JButton("Update");
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			
+
 				int employeeID = Integer.parseInt(txtEmployeeid.getText());
-				String []infos = employee.getEmployeeInfo(employeeID);
+				String[] infos = employee.getEmployeeInfo(employeeID);
 				new UpdateFrame(infos);
-				
+
 			}
 		});
 		updatePanel.add(btnUpdate);
@@ -257,15 +261,15 @@ public class AppFrame extends JFrame {
 		addPanel.add(addEmployeeBtn);
 		addEmployeeBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-					employee.addEmployee(firstNameTxtField.getText().toString(), lastNameTxtField.getText().toString(),
-							jobTitleTxtField.getText().toString(), dobTxtField.getText().toString(), 
-							Integer.parseInt(storeIdTxtField.getText()));
-				
+				employee.addEmployee(firstNameTxtField.getText().toString(), lastNameTxtField.getText().toString(),
+						jobTitleTxtField.getText().toString(), dobTxtField.getText().toString(),
+						Integer.parseInt(storeIdTxtField.getText()));
+
 				try {
 					employee.printTableData();
 					System.out.println();
 				} catch (SQLException e1) {
-					
+
 					e1.printStackTrace();
 				}
 			}
@@ -307,7 +311,7 @@ public class AppFrame extends JFrame {
 	private void createEmployeeTable() {
 
 		tablePanel.add(new JScrollPane(table));
-		
+
 	}
 
 	private void createNextBtn() {
@@ -319,12 +323,14 @@ public class AppFrame extends JFrame {
 		});
 		nextButtonPanel.add(nextBtn);
 	}
+
 	private void createSortPanel() {
 		sortPanel = new JPanel();
 		nextButtonPanel.add(sortPanel);
 		createSortBtns();
 	}
-	private void createSortBtns(){
+
+	private void createSortBtns() {
 		sortOptions = new JComboBox<String>();
 		sortPanel.add(sortOptions);
 		sortOptions.addItem("FirstName");
@@ -335,35 +341,38 @@ public class AppFrame extends JFrame {
 		sortBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ResultSet resultset = employee.sortEmployee(sortOptions.getSelectedItem().toString());
-				
+
 				employee.printTableData(resultset);
 				System.out.println();
 			}
 		});
 		sortPanel.add(sortBtn);
 	}
+
 	private void createFilterPanel() {
 		filterPanel = new JPanel();
 		nextButtonPanel.add(filterPanel);
 		createFilterBtns();
 	}
-	private void createFilterBtns(){
+
+	private void createFilterBtns() {
 		filterOptions = new JComboBox<String>();
 		filterOptions.addItem("FirstName");
 		filterOptions.addItem("LastName");
 		filterOptions.addItem("JobTitle");
 		filterOptions.addItem("DOB");
 		filterPanel.add(filterOptions);
-		
+
 		filterTxtField = new JTextField();
 		filterPanel.add(filterTxtField);
 		filterTxtField.setColumns(10);
-		
+
 		filterBtn = new JButton("Filter");
 		filterBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ResultSet resultset = employee.filterEmployee(filterOptions.getSelectedItem().toString(), filterTxtField.getText().toString());
-				
+				ResultSet resultset = employee.filterEmployee(filterOptions.getSelectedItem().toString(),
+						filterTxtField.getText().toString());
+
 				employee.printTableData(resultset);
 				System.out.println();
 			}
@@ -373,7 +382,6 @@ public class AppFrame extends JFrame {
 
 	public class UpdateFrame extends JFrame {
 
-		
 		private JPanel contentPane;
 		private JTextField txtFname;
 		private JTextField txtLname;
@@ -385,89 +393,84 @@ public class AppFrame extends JFrame {
 		 * Launch the application.
 		 */
 
-
 		/**
 		 * Create the frame.
 		 */
 		public UpdateFrame(String[] infos) {
 			setTitle("Update Employee Information");
-			//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			// setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			setBounds(100, 100, 450, 300);
 			contentPane = new JPanel();
 			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-			
+
 			setContentPane(contentPane);
-			
+
 //			for(String s : infos) {
 //				System.out.println(s);
 //			}
-			
+
 			int id = Integer.parseInt(infos[0]);
-			
+
 			JPanel contentPnl = new JPanel();
 			contentPane.add(contentPnl);
 			contentPnl.setLayout(new GridLayout(0, 2, 0, 0));
-			
+
 			JLabel lblFirstName = new JLabel("First Name: ");
 			contentPane.add(lblFirstName);
-			
+
 			txtFname = new JTextField();
 			txtFname.setText(infos[1]);
 			contentPane.add(txtFname);
 			txtFname.setColumns(10);
-			
+
 			JLabel lblLastName = new JLabel("Last Name: ");
 			contentPane.add(lblLastName);
-			
+
 			txtLname = new JTextField();
 			txtLname.setText(infos[2]);
 			contentPane.add(txtLname);
 			txtLname.setColumns(10);
-			
+
 			JLabel lblPosition = new JLabel("Position: ");
 			contentPane.add(lblPosition);
-			
+
 			txtPosition = new JTextField();
 			txtPosition.setText(infos[3]);
 			contentPane.add(txtPosition);
 			txtPosition.setColumns(10);
-			
+
 			JLabel lblDateOfBirth = new JLabel("Date Of Birth:");
 			contentPane.add(lblDateOfBirth);
-			
+
 			txtDob = new JTextField();
 			txtDob.setText(infos[4]);
 			contentPane.add(txtDob);
 			txtDob.setColumns(10);
-			
+
 			JLabel lblStoreId = new JLabel("Store ID");
 			contentPane.add(lblStoreId);
-			
+
 			txtStoreid = new JTextField();
 			txtStoreid.setText(infos[5]);
 			contentPane.add(txtStoreid);
 			txtStoreid.setColumns(10);
-			
-			
-			
-		
-			
+
 			JButton updateBtn = new JButton("UPDATE");
 			updateBtn.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 //				
-					
-					employee.updateEmployee(txtFname.getText(), txtLname.getText(),
-							txtPosition.getText(), txtDob.getText(), Integer.parseInt(txtStoreid.getText()), id);
-					
+
+					employee.updateEmployee(txtFname.getText(), txtLname.getText(), txtPosition.getText(),
+							txtDob.getText(), Integer.parseInt(txtStoreid.getText()), id);
+
 					dispose();
 				}
 			});
 			contentPane.add(updateBtn);
-			
+
 			setVisible(true);
 		}
-		
+
 	}
-	
+
 }
