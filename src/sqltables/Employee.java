@@ -38,23 +38,15 @@ public class Employee {
 
 	}
 
-	// These are the SQL methods... We can remove/change these later when we make
-	// our own methods
+
 	public static final String createTable = "CREATE TABLE Employee (" + "Id  int not null primary key "
 			+ "GENERATED ALWAYS AS IDENTITY " + "(START WITH 100, INCREMENT BY 1)," + "FirstName varchar(255),"
 			+ "LastName varchar(255)," + "JobTitle varchar(255)," + "DOB varchar(255)," + "StoreID int" + ")";
-
-	public static final String insertData = "INSERT INTO Employee (FirstName, LastName, JobTitle, DOB, StoreID) VALUES "
-			+ "('Tom','Ballinger', 'Clerk', '03/16/03', 3)," + "('Jessie','Romero', 'Manager', '07/21/97', 1),"
-			+ "('Barry','Binkerhoff', 'Stocker', '01/05/02', 1)";
 
 	public static final String selectAll = "SELECT * FROM Employee";
 
 	public static final String dropTable = "DROP TABLE Employee";
 	
-	public static final String innerJoin = "SELECT FirstName, LastName, City, Zipcode"
-			+ " FROM Employee"
-			+ " INNER JOIN Store ON Employee.StoreID = Store.Id";
 
 	/**
 	 * Prints the table out as a string (mostly for testing right now)
@@ -136,7 +128,6 @@ public class Employee {
 
 	/**
 	 * Java method for executing the dropTable SQL method.
-	 * 
 	 * @author Kevin
 	 */
 	public void dropTable() {
@@ -156,19 +147,6 @@ public class Employee {
 		try {
 			statement.execute(createTable);
 			resultSet = statement.executeQuery(Employee.selectAll);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Java method for executing the insertData SQL method.
-	 * 
-	 * @author Kevin
-	 */
-	public void insertData() {
-		try {
-			statement.execute(insertData);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -323,8 +301,10 @@ public class Employee {
 		return s;
 
 		}
+	
 	/**
 	 * Method to get the names of the columns as an array of strings
+	 * 
 	 * @return Returns the names of the columns of the table as an array of strings 
 	 * @author Kevin Dang
 	 */

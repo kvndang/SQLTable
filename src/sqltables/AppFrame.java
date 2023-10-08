@@ -3,32 +3,29 @@ package sqltables;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.EventQueue;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Arrays;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-
-import java.awt.GridLayout;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.JComboBox;
 
 public class AppFrame extends JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private JPanel cards;
 	private JPanel mainPanel;
 	private JPanel editPanel;
@@ -43,7 +40,6 @@ public class AppFrame extends JFrame {
 
 	private String query = Employee.selectAll;
 	private String storeQuery = Store.selectAll;
-	private String bothQuery = Employee.innerJoin;
 	private JTable table;
 
 	private JPanel nextButtonPanel;
@@ -92,6 +88,7 @@ public class AppFrame extends JFrame {
 	public static void main(String[] args) {
 
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					AppFrame window = new AppFrame();
@@ -110,18 +107,22 @@ public class AppFrame extends JFrame {
 
 		connection = null;
 		statement = null;
-		
+
 		try {
 			connection = DriverManager.getConnection(databaseURL);
 			statement = connection.createStatement();
 			employee = new Employee(statement);
-			
+
 			store = new Store(statement);
-			store.dropTable();
-			store.createTable();
-			store.insertData();
-			
+
+
 		    employeeStore = new EmployeeStore(statement);
+
+			//employee.printTableData();
+
+			// store = new Store(statement);
+			// store.printTableData();
+
 		}
 
 		catch (SQLException e) {
@@ -131,7 +132,7 @@ public class AppFrame extends JFrame {
 
 		frame = new JFrame();
 		frame.setBounds(100, 100, 1000, 1200);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
 
 		cardLayout = new CardLayout();
@@ -174,6 +175,7 @@ public class AppFrame extends JFrame {
 
 		removeBtn = new JButton("REMOVE");
 		removeBtn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int removeID = Integer.parseInt(removeIDTxtField.getText());
 
@@ -193,6 +195,7 @@ public class AppFrame extends JFrame {
 
 		prevBtn = new JButton("GO BACK");
 		prevBtn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				cardLayout.previous(cards);
 				updateTablePanel(query);
@@ -205,7 +208,7 @@ public class AppFrame extends JFrame {
 	private void createUpdatePanel() {
 		updatePanel = new JPanel();
 		editPanel.add(updatePanel);
-		
+
 		lblUpdateEmployeeInfo = new JLabel("Update Employee Info: ");
 		updatePanel.add(lblUpdateEmployeeInfo);
 
@@ -215,6 +218,7 @@ public class AppFrame extends JFrame {
 
 		btnUpdate = new JButton("Update");
 		btnUpdate.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 
 				int employeeID = Integer.parseInt(txtEmployeeid.getText());
@@ -272,6 +276,7 @@ public class AppFrame extends JFrame {
 		addEmployeeBtn = new JButton("Add");
 		addPanel.add(addEmployeeBtn);
 		addEmployeeBtn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				employee.addEmployee(firstNameTxtField.getText().toString(), lastNameTxtField.getText().toString(),
 						jobTitleTxtField.getText().toString(), dobTxtField.getText().toString(),
@@ -320,16 +325,10 @@ public class AppFrame extends JFrame {
 
 	}
 
-	private void createEmployeeTable() {
-
-		tablePanel.add(new JScrollPane(table));
-
-	}
-
-
 	private void createNextBtn() {
 		nextBtn = new JButton("Modify");
 		nextBtn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				cardLayout.next(cards);
 			}
@@ -340,7 +339,7 @@ public class AppFrame extends JFrame {
 	private void createSortPanel() {
 		sortPanel = new JPanel();
 		nextButtonPanel.add(sortPanel);
-		
+
 		createSelectTablePanel();
 		createSortBtns();
 	}
@@ -348,17 +347,18 @@ public class AppFrame extends JFrame {
 	private void createSelectTablePanel() {
 		selectTablePanel = new JPanel();
 		nextButtonPanel.add(selectTablePanel);
-		
-		selectTableOptions = new JComboBox<String>();
-		
+
+		selectTableOptions = new JComboBox<>();
+
 		selectTablePanel.add(selectTableOptions);
 		selectTableOptions.addItem("Employee");
 		selectTableOptions.addItem("Store");
 		selectTableOptions.addItem("Both");
 
-		
+
 		selectBtn = new JButton("Select");
 		selectBtn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				selected = selectTableOptions.getSelectedItem().toString();
 				if(selected == "Store")
@@ -367,14 +367,14 @@ public class AppFrame extends JFrame {
 					updateTablePanel(query);
 				if(selected == "Both")
 					updateTablePanel(query);
-				
+
 			}
 		});
 		selectTablePanel.add(selectBtn);
 	}
 
 	private void createSortBtns() {
-		sortOptions = new JComboBox<String>();
+		sortOptions = new JComboBox<>();
 		sortPanel.add(sortOptions);
 		sortOptions.addItem("FirstName");
 		sortOptions.addItem("LastName");
@@ -383,8 +383,9 @@ public class AppFrame extends JFrame {
 		sortOptions.addItem("Id");
 		sortOptions.addItem("StoreID");
 		sortBtn = new JButton("Sort");
-		
+
 		sortBtn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 
 				String s = employee.sortEmployee(sortOptions.getSelectedItem().toString());
@@ -405,7 +406,7 @@ public class AppFrame extends JFrame {
 	}
 
 	private void createFilterBtns() {
-		filterOptions = new JComboBox<String>();
+		filterOptions = new JComboBox<>();
 		filterOptions.addItem("FirstName");
 		filterOptions.addItem("LastName");
 		filterOptions.addItem("JobTitle");
@@ -421,6 +422,7 @@ public class AppFrame extends JFrame {
 		filterBtn = new JButton("Filter");
 		filterBtn.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent e) {
 
 			String f = employee.filterEmployee(filterOptions.getSelectedItem().toString(), filterTxtField.getText().toString());
@@ -432,7 +434,7 @@ public class AppFrame extends JFrame {
 			});
 		filterPanel.add(filterBtn);
 	}
-	
+
 	private void updateTablePanel(String m) {
 		tablePanel.removeAll();
 		if(selected == "Employee")
@@ -523,8 +525,9 @@ public class AppFrame extends JFrame {
 
 			JButton updateBtn = new JButton("UPDATE");
 			updateBtn.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
-//				
+//
 
 					employee.updateEmployee(txtFname.getText(), txtLname.getText(), txtPosition.getText(),
 							txtDob.getText(), Integer.parseInt(txtStoreid.getText()), id);
@@ -535,7 +538,7 @@ public class AppFrame extends JFrame {
 			contentPane.add(updateBtn);
 
 			setVisible(true);
-			
+
 
 		}
 

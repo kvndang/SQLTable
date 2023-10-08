@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.swing.table.DefaultTableModel;
-
+ 
 public class Store {
 	private Statement statement;
 	private ResultSet resultSet;
@@ -32,12 +32,6 @@ public class Store {
 			+ "Pharmacy int,"
 			+ "Zipcode int"
 			+ ")";
-	
-	public static final String insertData =
-			"INSERT INTO Store (Id, City, Pharmacy, Zipcode) VALUES "
-			+ "(1,'Taylorsville', 0, 84045),"
-			+ "(2,'Detroit', 1, 48127),"
-			+ "(3,'Arlington', 0, 76001)";
 	
 	public static final String selectAll =
 			"SELECT * FROM Store";
@@ -145,19 +139,6 @@ public class Store {
 		}
 	}
 	
-	/**
-	 * Java method for executing the insertData SQL method.
-	 * @author Kevin
-	 */
-	public void insertData()
-	{
-		try {
-		statement.execute(insertData);
-		}catch(SQLException e)
-		{
-			e.printStackTrace();
-		}
-	}
 	/**
 	 * method to add a new store to the Stores database.
 	 *

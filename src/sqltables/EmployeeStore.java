@@ -32,7 +32,10 @@ public class EmployeeStore {
 			+ " FROM Employee"
 			+ " INNER JOIN Store ON Employee.StoreID = Store.Id";
 
-	
+	/**
+	 * Returns the combined table of Employee and Store as a DefaulTableModel for JTable
+	 * @return
+	 */
 	public DefaultTableModel getTableModel() {
 		try {
 			resultSet = statement.executeQuery(innerJoin);
