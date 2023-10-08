@@ -243,7 +243,7 @@ public class Employee {
 		}
 		return null;
 	}
-
+	
 	/**
 	 * Removes an employee from the Employee SQL Table
 	 * 
@@ -319,4 +319,26 @@ public class Employee {
 		return s;
 
 		}
+	/**
+	 * Method to get the names of the columns as an array of strings
+	 * @return Returns the names of the columns of the table as an array of strings 
+	 * @author Kevin Dang
+	 */
+	public String[] getColumnNames()
+	{
+		try {
+		String[] columnNames = new String[metaData.getColumnCount()];
+		for(int i = 1; i <= metaData.getColumnCount(); i++)
+		{
+			columnNames[i-1] = metaData.getColumnLabel(i);
+		}
+		return columnNames;
+		}catch(SQLException e)
+		{
+			System.out.println("Something went wrong with SQL");
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 }

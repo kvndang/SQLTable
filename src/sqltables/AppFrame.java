@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -108,7 +109,8 @@ public class AppFrame extends JFrame {
 			connection = DriverManager.getConnection(databaseURL);
 			statement = connection.createStatement();
 			employee = new Employee(statement);
-			employee.printTableData();
+			//employee.printTableData();
+			System.out.print(Arrays.toString(employee.getColumnNames()));
 			// store = new Store(statement);
 			// store.printTableData();
 		}
@@ -489,6 +491,8 @@ public class AppFrame extends JFrame {
 			contentPane.add(updateBtn);
 
 			setVisible(true);
+			
+
 		}
 
 	}
