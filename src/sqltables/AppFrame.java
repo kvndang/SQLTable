@@ -25,6 +25,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JComboBox;
+import javax.swing.JCheckBox;
 
 public class AppFrame extends JFrame {
 
@@ -41,7 +42,7 @@ public class AppFrame extends JFrame {
 	private static Statement statement; // = null;
 
 	private String query = Employee.selectAll;
-	private JTable table;
+	private JTable employeeTable;
 
 	private JPanel nextButtonPanel;
 	private JButton nextBtn;
@@ -77,6 +78,10 @@ public class AppFrame extends JFrame {
 	private JComboBox<String> filterOptions;
 	private JTextField filterTxtField;
 	private JButton filterBtn;
+	private JPanel selectionPanel;
+	private JCheckBox storeChkBox;
+	private JCheckBox employeeChkBox;
+	private JCheckBox combinedChkBox;
 
 	/**
 	 * Launch the application.
@@ -127,7 +132,7 @@ public class AppFrame extends JFrame {
 		frame.getContentPane().add(cards, "cards");
 
 		DefaultTableModel model = employee.getTableModel(query);
-		table = new JTable(model);
+		employeeTable = new JTable(model);
 
 		createMainPanel();
 
@@ -284,14 +289,14 @@ public class AppFrame extends JFrame {
 		createNextBtn();
 		createSortPanel();
 
-		table = new JTable();
+		employeeTable = new JTable();
 
 	}
 
 	private void createNextPanel() {
 		mainPanel.setLayout(new BorderLayout(0, 0));
 		nextButtonPanel = new JPanel();
-		mainPanel.add(nextButtonPanel);
+		mainPanel.add(nextButtonPanel, BorderLayout.SOUTH);
 		{
 			createTablePanel();
 		}
@@ -318,6 +323,22 @@ public class AppFrame extends JFrame {
 	private void createSortPanel() {
 		sortPanel = new JPanel();
 		nextButtonPanel.add(sortPanel);
+		
+		selectionPanel = new JPanel();
+		nextButtonPanel.add(selectionPanel);
+		
+		storeChkBox = new JCheckBox("store");
+		selectionPanel.add(storeChkBox);
+		
+		employeeChkBox = new JCheckBox("employee");
+		selectionPanel.add(employeeChkBox);
+		
+		employeeChkBox.isSelected();
+		
+		combinedChkBox = new JCheckBox("combined");
+		selectionPanel.add(combinedChkBox);
+		
+		
 		createSortBtns();
 	}
 	private void createSortBtns(){
@@ -369,7 +390,10 @@ public class AppFrame extends JFrame {
 	
 	private void updateTablePanel(String m) {
 		tablePanel.removeAll();
+		tablePanel.setLayout(new GridLayout(1, 2, 0, 0));
 		tablePanel.add(new JScrollPane(new JTable(employee.getTableModel(m))));
+		tablePanel.add(new JScrollPane(new JTable(employee.getTableModel(m))));
+		mainPanel.add(new JScrollPane(new JTable(employee.getTableModel(m))),BorderLayout.CENTER);
 		tablePanel.revalidate();
 		tablePanel.repaint();
 		tablePanel.setVisible(true);
