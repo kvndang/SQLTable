@@ -41,6 +41,7 @@ public class AppFrame extends JFrame {
 	private static Statement statement; // = null;
 
 	private String query = Employee.selectAll;
+	private String storeQuery = Store.selectAll;
 	private JTable table;
 
 	private JPanel nextButtonPanel;
@@ -78,6 +79,10 @@ public class AppFrame extends JFrame {
 	private JTextField filterTxtField;
 	private JButton filterBtn;
 	private JLabel lblUpdateEmployeeInfo;
+	private JPanel selectTablePanel;
+	private JComboBox<String> selectTableOptions;
+	private JButton selectBtn;
+	private String selected;
 
 	/**
 	 * Launch the application.
@@ -109,8 +114,9 @@ public class AppFrame extends JFrame {
 			statement = connection.createStatement();
 			employee = new Employee(statement);
 			employee.printTableData();
-			// store = new Store(statement);
-			// store.printTableData();
+			
+			 store = new Store(statement);
+			 store.printTableData();
 		}
 
 		catch (SQLException e) {
@@ -329,7 +335,34 @@ public class AppFrame extends JFrame {
 	private void createSortPanel() {
 		sortPanel = new JPanel();
 		nextButtonPanel.add(sortPanel);
+		
+		createSelectTablePanel();
 		createSortBtns();
+	}
+
+	private void createSelectTablePanel() {
+		selectTablePanel = new JPanel();
+		nextButtonPanel.add(selectTablePanel);
+		
+		selectTableOptions = new JComboBox<String>();
+		
+		selectTablePanel.add(selectTableOptions);
+		selectTableOptions.addItem("Employee");
+		selectTableOptions.addItem("Store");
+
+		
+		selectBtn = new JButton("Select");
+		selectBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				selected = selectTableOptions.getSelectedItem().toString();
+				if(selected == "Store")
+					updateTablePanel(storeQuery);
+				if(selected == "Employee")
+					updateTablePanel(query);
+				
+			}
+		});
+		selectTablePanel.add(selectBtn);
 	}
 
 	private void createSortBtns() {
@@ -394,7 +427,11 @@ public class AppFrame extends JFrame {
 	
 	private void updateTablePanel(String m) {
 		tablePanel.removeAll();
-		tablePanel.add(new JScrollPane(new JTable(employee.getTableModel(m))));
+		if(selected == "Employee")
+			tablePanel.add(new JScrollPane(new JTable(employee.getTableModel(m))));
+		if(selected == "Store")
+			tablePanel.add(new JScrollPane(new JTable(store.getTableModel(m))));
+		
 		tablePanel.revalidate();
 		tablePanel.repaint();
 		tablePanel.setVisible(true);
