@@ -114,14 +114,16 @@ public class AppFrame extends JFrame {
 			connection = DriverManager.getConnection(databaseURL);
 			statement = connection.createStatement();
 			employee = new Employee(statement);
-
 			employee.printTableData();
 			
-			 store = new Store(statement);
-			 store.printTableData();
+			store = new Store(statement);
+//			store.printTableData();
+			
+//			EmployeeStore test = new EmployeeStore(statement);
+//			test.printTableData();
 
 			//employee.printTableData();
-			System.out.print(Arrays.toString(employee.getColumnNames()));
+			
 			// store = new Store(statement);
 			// store.printTableData();
 

@@ -5,6 +5,8 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.swing.table.DefaultTableModel;
+
 public class Store {
 	private Statement statement;
 	private ResultSet resultSet;
@@ -43,26 +45,60 @@ public class Store {
 	public static final String dropTable =
 			"DROP TABLE Store";
 	
+	
+	/**
+	 * Prints the table out as a string (mostly for testing right now)
+	 * 
+	 * @param resultSet
+	 * @throws SQLException
+	 */
 	public void printTableData() throws SQLException {
 		resultSet = statement.executeQuery(selectAll);
-		//print header
+		// print header
 		int dashCount = 0;
-		for(int i = 1; i <= metaData.getColumnCount(); i++) {
+		for (int i = 1; i <= metaData.getColumnCount(); i++) {
 			System.out.print(metaData.getColumnLabel(i) + " ");
 			dashCount += metaData.getColumnLabel(i).length() + 1;
 		}
 		System.out.println();
 		System.out.println("-".repeat(--dashCount));
-		
-		//print data
-		while(resultSet.next()) {
-			for(int i = 1; i<= metaData.getColumnCount(); i++ ) {
-				System.out.printf("%-" + (metaData.getColumnLabel(i).toString().length()+1) +
-						"s", resultSet.getObject(i) + " ");
+
+		// print data
+		while (resultSet.next()) {
+			for (int i = 1; i <= metaData.getColumnCount(); i++) {
+				System.out.printf("%-" + (metaData.getColumnLabel(i).toString().length() + 1) + "s",
+						resultSet.getObject(i) + " ");
 			}
 			System.out.println();
 		}
+	}
+	
+	public DefaultTableModel getTableModel(String query) {
+		try {
+			DefaultTableModel model = new DefaultTableModel();
+
+			ResultSet resultSet = statement.executeQuery(query);
+
+			ResultSetMetaData metaData = resultSet.getMetaData();
+			int columnCount = metaData.getColumnCount();
+			for (int i = 1; i <= columnCount; i++) {
+				model.addColumn(metaData.getColumnName(i));
+			}
+
+			while (resultSet.next()) {
+				Object[] rowData = new Object[columnCount];
+				for (int i = 1; i <= columnCount; i++) {
+					rowData[i - 1] = resultSet.getObject(i);
+				}
+				model.addRow(rowData);
+			}
+
+			return model;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
 		}
+	}
 	
 	/**
 	 * Returns the amount of columns in the Employee database. 
