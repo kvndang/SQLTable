@@ -66,32 +66,6 @@ public class Store {
 		}
 	}
 	
-	public DefaultTableModel getTableModel(String query) {
-		try {
-			DefaultTableModel model = new DefaultTableModel();
-
-			ResultSet resultSet = statement.executeQuery(query);
-
-			ResultSetMetaData metaData = resultSet.getMetaData();
-			int columnCount = metaData.getColumnCount();
-			for (int i = 1; i <= columnCount; i++) {
-				model.addColumn(metaData.getColumnName(i));
-			}
-
-			while (resultSet.next()) {
-				Object[] rowData = new Object[columnCount];
-				for (int i = 1; i <= columnCount; i++) {
-					rowData[i - 1] = resultSet.getObject(i);
-				}
-				model.addRow(rowData);
-			}
-
-			return model;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
 	
 	/**
 	 * Returns the amount of columns in the Employee database. 

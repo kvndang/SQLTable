@@ -496,9 +496,10 @@ public class AppFrame extends JFrame {
 					updateTablePanel(storeQuery);
 				if(selected == "Employee")
 					updateTablePanel(query);
+				if(selected == "Both")
+					updateTablePanel(query);
 				updateSortBtns();
-				updateFilterBtns();
-				
+				updateFilterBtns();	
 			}
 		});
 		selectTablePanel.add(selectBtn);
