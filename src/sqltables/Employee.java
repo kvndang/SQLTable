@@ -285,10 +285,14 @@ public class Employee {
 	 * @author James
 	 */
 	public String sortEmployee(String selection) {
+
 		String s = String.format("SELECT * FROM Employee "
-				+ "ORDER BY %s", selection);
+
+		+ "ORDER BY %s", selection);
+
 		return s;
-	}
+
+		}
 	
 	/**
 	 * Filters the Employee SQL Table depending on the given columns name and the contents inside.
@@ -299,12 +303,20 @@ public class Employee {
 	 * @author James
 	 */
 	public String filterEmployee(String name, String filter) {
+
 		String n;
+
 		if(name == "Id" || name == "StoreID")
-			 n = filter;
+
+		n = filter;
+
 		else
-			n = "'" + filter + "'";
+
+		n = "'" + filter + "'";
+
 		String s = String.format("SELECT * FROM Employee WHERE %s = %s", name, n);
+
 		return s;
-	}
+
+		}
 }

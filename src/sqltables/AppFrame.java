@@ -309,14 +309,12 @@ public class AppFrame extends JFrame {
 
 	}
 
-<<<<<<< HEAD
 	private void createEmployeeTable() {
 
 		tablePanel.add(new JScrollPane(table));
 
 	}
-=======
->>>>>>> pr/6
+
 
 	private void createNextBtn() {
 		nextBtn = new JButton("Modify");
@@ -344,19 +342,18 @@ public class AppFrame extends JFrame {
 		sortOptions.addItem("Id");
 		sortOptions.addItem("StoreID");
 		sortBtn = new JButton("Sort");
+		
 		sortBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-<<<<<<< HEAD
-				ResultSet resultset = employee.sortEmployee(sortOptions.getSelectedItem().toString());
 
-				employee.printTableData(resultset);
-				System.out.println();
-=======
 				String s = employee.sortEmployee(sortOptions.getSelectedItem().toString());
+
 				updateTablePanel(s);
->>>>>>> pr/6
-			}
-		});
+
+				}
+
+				});
+
 		sortPanel.add(sortBtn);
 	}
 
@@ -382,19 +379,16 @@ public class AppFrame extends JFrame {
 
 		filterBtn = new JButton("Filter");
 		filterBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-<<<<<<< HEAD
-				ResultSet resultset = employee.filterEmployee(filterOptions.getSelectedItem().toString(),
-						filterTxtField.getText().toString());
 
-				employee.printTableData(resultset);
-				System.out.println();
-=======
-				String f = employee.filterEmployee(filterOptions.getSelectedItem().toString(), filterTxtField.getText().toString());
-				updateTablePanel(f);
->>>>>>> pr/6
+			public void actionPerformed(ActionEvent e) {
+
+			String f = employee.filterEmployee(filterOptions.getSelectedItem().toString(), filterTxtField.getText().toString());
+
+			updateTablePanel(f);
+
 			}
-		});
+
+			});
 		filterPanel.add(filterBtn);
 	}
 	
