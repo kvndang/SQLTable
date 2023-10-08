@@ -10,7 +10,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -23,6 +22,12 @@ import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+/**
+* Class for displaying Employee and Store data. User may add, remove or edit
+* existing Employees.
+*
+* @author Monte James Kevin Edwin
+*/
 public class AppFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -447,7 +452,12 @@ public class AppFrame extends JFrame {
 		tablePanel.repaint();
 		tablePanel.setVisible(true);
 	}
-
+	
+	/**
+	* Nested class for the modify window allowing user to edit an existing employee information
+	*
+	* @author Edwin
+	*/
 	public class UpdateFrame extends JFrame {
 
 		private JPanel contentPane;
