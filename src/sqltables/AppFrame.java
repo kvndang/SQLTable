@@ -43,6 +43,7 @@ public class AppFrame extends JFrame {
 
 	private String query = Employee.selectAll;
 	private String storeQuery = Store.selectAll;
+	private String bothQuery = Employee.innerJoin;
 	private JTable table;
 
 	private JPanel nextButtonPanel;
@@ -84,7 +85,7 @@ public class AppFrame extends JFrame {
 	private JComboBox<String> selectTableOptions;
 	private JButton selectBtn;
 	private String selected;
-
+	private EmployeeStore employeeStore;
 	/**
 	 * Launch the application.
 	 */
@@ -109,24 +110,18 @@ public class AppFrame extends JFrame {
 
 		connection = null;
 		statement = null;
-
+		
 		try {
 			connection = DriverManager.getConnection(databaseURL);
 			statement = connection.createStatement();
 			employee = new Employee(statement);
-			employee.printTableData();
 			
 			store = new Store(statement);
-//			store.printTableData();
+			store.dropTable();
+			store.createTable();
+			store.insertData();
 			
-//			EmployeeStore test = new EmployeeStore(statement);
-//			test.printTableData();
-
-			//employee.printTableData();
-			
-			// store = new Store(statement);
-			// store.printTableData();
-
+		    employeeStore = new EmployeeStore(statement);
 		}
 
 		catch (SQLException e) {
@@ -359,6 +354,7 @@ public class AppFrame extends JFrame {
 		selectTablePanel.add(selectTableOptions);
 		selectTableOptions.addItem("Employee");
 		selectTableOptions.addItem("Store");
+		selectTableOptions.addItem("Both");
 
 		
 		selectBtn = new JButton("Select");
@@ -368,6 +364,8 @@ public class AppFrame extends JFrame {
 				if(selected == "Store")
 					updateTablePanel(storeQuery);
 				if(selected == "Employee")
+					updateTablePanel(query);
+				if(selected == "Both")
 					updateTablePanel(query);
 				
 			}
@@ -441,7 +439,8 @@ public class AppFrame extends JFrame {
 			tablePanel.add(new JScrollPane(new JTable(employee.getTableModel(m))));
 		if(selected == "Store")
 			tablePanel.add(new JScrollPane(new JTable(store.getTableModel(m))));
-		
+		if(selected == "Both")
+			tablePanel.add(new JScrollPane(new JTable(employeeStore.getTableModel())));
 		tablePanel.revalidate();
 		tablePanel.repaint();
 		tablePanel.setVisible(true);

@@ -35,9 +35,9 @@ public class Store {
 	
 	public static final String insertData =
 			"INSERT INTO Store (Id, City, Pharmacy, Zipcode) VALUES "
-			+ "(1000,'Taylorsville', 0, 84045),"
-			+ "(1001,'Detroit', 1, 48127),"
-			+ "(1002,'Arlington', 0, 76001)";
+			+ "(1,'Taylorsville', 0, 84045),"
+			+ "(2,'Detroit', 1, 48127),"
+			+ "(3,'Arlington', 0, 76001)";
 	
 	public static final String selectAll =
 			"SELECT * FROM Store";

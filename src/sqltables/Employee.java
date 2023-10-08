@@ -51,6 +51,10 @@ public class Employee {
 	public static final String selectAll = "SELECT * FROM Employee";
 
 	public static final String dropTable = "DROP TABLE Employee";
+	
+	public static final String innerJoin = "SELECT FirstName, LastName, City, Zipcode"
+			+ " FROM Employee"
+			+ " INNER JOIN Store ON Employee.StoreID = Store.Id";
 
 	/**
 	 * Prints the table out as a string (mostly for testing right now)
