@@ -1,6 +1,5 @@
 package sqltables;
 
-import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -97,7 +96,6 @@ public class Employee {
 				dashCount += metaData.getColumnLabel(i).length() + 1;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		System.out.println();
@@ -113,7 +111,6 @@ public class Employee {
 				System.out.println();
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -242,7 +239,6 @@ public class Employee {
 			return infos;
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -283,39 +279,32 @@ public class Employee {
 	
 	/**
 	 * Sorts the Employee SQL Table depending on the selection made by the button.
-	 * TODO only works for strings right now. Eventually need to figure out a way to incorporate integers.
+	 * 
 	 * @param selection
+	 * @return resultSet
 	 * @author James
-	 * @return 
 	 */
-	public ResultSet sortEmployee(String selection) {
+	public String sortEmployee(String selection) {
 		String s = String.format("SELECT * FROM Employee "
 				+ "ORDER BY %s", selection);
-		try {
-			resultSet = statement.executeQuery(s);
-		} catch(SQLException e) {
-			System.out.println("SQLException");
-			e.printStackTrace();
-		}
-		return resultSet;
+		return s;
 	}
 	
 	/**
 	 * Filters the Employee SQL Table depending on the given columns name and the contents inside.
-	 * TODO only works for strings right now. Eventually need to figure out a way to incorporate integers.
+	 * 
 	 * @param name
 	 * @param filter
+	 * @return resultSet
 	 * @author James
-	 * @return 
 	 */
-	public ResultSet filterEmployee(String name, String filter) {
-		String s = String.format("SELECT * FROM Employee WHERE %s = '%s'", name, filter);
-		try {
-			resultSet = statement.executeQuery(s);
-		} catch(SQLException e) {
-			System.out.println("SQLException");
-			e.printStackTrace();
-		}
-		return resultSet;
+	public String filterEmployee(String name, String filter) {
+		String n;
+		if(name == "Id" || name == "StoreID")
+			 n = filter;
+		else
+			n = "'" + filter + "'";
+		String s = String.format("SELECT * FROM Employee WHERE %s = %s", name, n);
+		return s;
 	}
 }

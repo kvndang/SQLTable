@@ -1,8 +1,5 @@
 package sqltables;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -12,7 +9,6 @@ public class Store {
 	private Statement statement;
 	private ResultSet resultSet;
 	private ResultSetMetaData metaData;
-	private static final String databaseURL = "jdbc:derby:FirstDatabase;create=true";
 	
 	public Store(Statement statement)
 	{
@@ -186,35 +182,33 @@ public class Store {
 	
 	/**
 	 * Sorts the Store SQL Table depending on the selection made by the button.
-	 * TODO only works for strings right now. Eventually need to figure out a way to incorporate integers.
+	 * 
 	 * @param selection
 	 * @author James
+	 * @return 
 	 */
-	public void sortStore(String selection) {
-		String s = String.format("SELECT * FROM Store ORDER BY '%s'", selection);
-		try {
-			statement.execute(s);
-		} catch(SQLException e) {
-			System.out.println("SQLException");
-			e.printStackTrace();
-		}
+	public String sortStore(String selection) {
+		String s = String.format("SELECT * FROM Store "
+				+ "ORDER BY %s", selection);
+		return s;
 	}
 	
 	/**
 	 * Filters the Store SQL Table depending on the given columns name and the contents inside.
-	 * TODO only works for strings right now. Eventually need to figure out a way to incorporate integers.
+	 * 
 	 * @param name
-	 * @param sort
+	 * @param filter
 	 * @author James
+	 * @return 
 	 */
-	public void filterStore(String name, String sort) {
-		String s = String.format("SELECT * FROM Store WHERE %s = '%s'", name, sort);
-		try {
-			statement.execute(s);
-		} catch(SQLException e) {
-			System.out.println("SQLException");
-			e.printStackTrace();
-		}
+	public String filterStore(String name, String filter) {
+		String n;
+		if(name == "Id" || name == "Pharmacy")
+			 n = filter;
+		else
+			n = "'" + filter + "'";
+		String s = String.format("SELECT * FROM Store WHERE %s = %s", name, n);
+		return s;
 	}
 	
 }
