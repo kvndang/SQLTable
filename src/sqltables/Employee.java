@@ -289,12 +289,10 @@ public class Employee {
 		String n;
 
 		if(name == "Id" || name == "StoreID")
-
-		n = filter;
+			n = filter;
 
 		else
-
-		n = "'" + filter + "'";
+			n = "'" + filter + "'";
 
 		String s = String.format("SELECT * FROM Employee WHERE %s = %s", name, n);
 
