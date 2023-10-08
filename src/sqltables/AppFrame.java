@@ -164,7 +164,7 @@ public class AppFrame extends JFrame {
 	private void createRemovePanel() {
 		removePanel = new JPanel();
 		editPanel.add(removePanel);
-
+		if(selected == "Employee") {
 		removeLbl = new JLabel("Remove Employee:");
 		removePanel.add(removeLbl);
 
@@ -174,12 +174,35 @@ public class AppFrame extends JFrame {
 		removeIDTxtField = new JTextField();
 		removePanel.add(removeIDTxtField);
 		removeIDTxtField.setColumns(10);
+		}
+		else if(selected == "Store") {
+			removeLbl = new JLabel("Remove Store:");
+			removePanel.add(removeLbl);
+
+			removeIDLbl = new JLabel("Enter Id to remove");
+			removePanel.add(removeIDLbl);
+
+			removeIDTxtField = new JTextField();
+			removePanel.add(removeIDTxtField);
+			removeIDTxtField.setColumns(10);
+		}
+		else {
+			removeLbl = new JLabel("Remove Employee:");
+			removePanel.add(removeLbl);
+
+			removeIDLbl = new JLabel("Enter Id to remove");
+			removePanel.add(removeIDLbl);
+
+			removeIDTxtField = new JTextField();
+			removePanel.add(removeIDTxtField);
+			removeIDTxtField.setColumns(10);
+		}
 
 		removeBtn = new JButton("REMOVE");
 		removeBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int removeID = Integer.parseInt(removeIDTxtField.getText());
-
+				if(selected == "Employee") {
 				employee.removeEmployee(removeID);
 
 				try {
@@ -188,6 +211,18 @@ public class AppFrame extends JFrame {
 				} catch (SQLException e1) {
 
 					e1.printStackTrace();
+				}
+				}
+				else if(selected == "Store") {
+					store.removeStore(removeID);
+
+					try {
+						store.printTableData();
+						System.out.println();
+					} catch (SQLException e1) {
+
+						e1.printStackTrace();
+					}
 				}
 			}
 		});
@@ -204,27 +239,33 @@ public class AppFrame extends JFrame {
 		removePanel.add(prevBtn);
 
 	}
+	
+	private void updateRemovePanel() {
+		removePanel.removeAll();
+		createRemovePanel();
+		removePanel.revalidate();
+		removePanel.repaint();
+		removePanel.setVisible(true);
+	}
 
 	private void createUpdatePanel() {
 		updatePanel = new JPanel();
 		editPanel.add(updatePanel);
-		
 		lblUpdateEmployeeInfo = new JLabel("Update Employee Info: ");
 		updatePanel.add(lblUpdateEmployeeInfo);
 
 		txtEmployeeid = new JTextField();
 		updatePanel.add(txtEmployeeid);
 		txtEmployeeid.setColumns(10);
-
 		btnUpdate = new JButton("Update");
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				String[] infos;
 				int employeeID = Integer.parseInt(txtEmployeeid.getText());
-				String[] infos = employee.getEmployeeInfo(employeeID);
+					infos = employee.getEmployeeInfo(employeeID);
 				new UpdateFrame(infos);
+				}
 
-			}
 		});
 		updatePanel.add(btnUpdate);
 
@@ -233,49 +274,121 @@ public class AppFrame extends JFrame {
 	private void createAddPanel() {
 		addPanel = new JPanel();
 		editPanel.add(addPanel);
-
-		addLbl = new JLabel("Add Employee:");
-		addPanel.add(addLbl);
-
-		firstNameLbl = new JLabel("First Name");
-		addPanel.add(firstNameLbl);
-
-		firstNameTxtField = new JTextField();
-		addPanel.add(firstNameTxtField);
-		firstNameTxtField.setColumns(10);
-
-		lastNameLbl = new JLabel("Last Name");
-		addPanel.add(lastNameLbl);
-
-		lastNameTxtField = new JTextField();
-		addPanel.add(lastNameTxtField);
-		lastNameTxtField.setColumns(10);
-
-		jobTitleLbl = new JLabel("Job Title");
-		addPanel.add(jobTitleLbl);
-
-		jobTitleTxtField = new JTextField();
-		addPanel.add(jobTitleTxtField);
-		jobTitleTxtField.setColumns(10);
-
-		dobLbl = new JLabel("Date Of Birth");
-		addPanel.add(dobLbl);
-
-		dobTxtField = new JTextField();
-		addPanel.add(dobTxtField);
-		dobTxtField.setColumns(10);
-
-		storeIdLbl = new JLabel("StoreID");
-		addPanel.add(storeIdLbl);
-
-		storeIdTxtField = new JTextField();
-		addPanel.add(storeIdTxtField);
-		storeIdTxtField.setColumns(10);
-
+		if(selected == "Employee") {
+			addLbl = new JLabel("Add Employee:");
+			addPanel.add(addLbl);
+	
+			firstNameLbl = new JLabel("First Name");
+			addPanel.add(firstNameLbl);
+	
+			firstNameTxtField = new JTextField();
+			addPanel.add(firstNameTxtField);
+			firstNameTxtField.setColumns(10);
+	
+			lastNameLbl = new JLabel("Last Name");
+			addPanel.add(lastNameLbl);
+	
+			lastNameTxtField = new JTextField();
+			addPanel.add(lastNameTxtField);
+			lastNameTxtField.setColumns(10);
+	
+			jobTitleLbl = new JLabel("Job Title");
+			addPanel.add(jobTitleLbl);
+	
+			jobTitleTxtField = new JTextField();
+			addPanel.add(jobTitleTxtField);
+			jobTitleTxtField.setColumns(10);
+	
+			dobLbl = new JLabel("Date Of Birth");
+			addPanel.add(dobLbl);
+	
+			dobTxtField = new JTextField();
+			addPanel.add(dobTxtField);
+			dobTxtField.setColumns(10);
+	
+			storeIdLbl = new JLabel("StoreID");
+			addPanel.add(storeIdLbl);
+	
+			storeIdTxtField = new JTextField();
+			addPanel.add(storeIdTxtField);
+			storeIdTxtField.setColumns(10);
+		}
+		else if(selected == "Store") {
+			addLbl = new JLabel("Add Store:");
+			addPanel.add(addLbl);
+	
+			firstNameLbl = new JLabel("StoreID:");
+			addPanel.add(firstNameLbl);
+	
+			firstNameTxtField = new JTextField();
+			addPanel.add(firstNameTxtField);
+			firstNameTxtField.setColumns(10);
+	
+			lastNameLbl = new JLabel("City:");
+			addPanel.add(lastNameLbl);
+	
+			lastNameTxtField = new JTextField();
+			addPanel.add(lastNameTxtField);
+			lastNameTxtField.setColumns(10);
+	
+			jobTitleLbl = new JLabel("Pharmacy:");
+			addPanel.add(jobTitleLbl);
+	
+			jobTitleTxtField = new JTextField();
+			addPanel.add(jobTitleTxtField);
+			jobTitleTxtField.setColumns(10);
+	
+			dobLbl = new JLabel("Zipcode:");
+			addPanel.add(dobLbl);
+	
+			dobTxtField = new JTextField();
+			addPanel.add(dobTxtField);
+			dobTxtField.setColumns(10);
+		}
+		else {
+			addLbl = new JLabel("Add Employee:");
+			addPanel.add(addLbl);
+	
+			firstNameLbl = new JLabel("First Name");
+			addPanel.add(firstNameLbl);
+	
+			firstNameTxtField = new JTextField();
+			addPanel.add(firstNameTxtField);
+			firstNameTxtField.setColumns(10);
+	
+			lastNameLbl = new JLabel("Last Name");
+			addPanel.add(lastNameLbl);
+	
+			lastNameTxtField = new JTextField();
+			addPanel.add(lastNameTxtField);
+			lastNameTxtField.setColumns(10);
+	
+			jobTitleLbl = new JLabel("Job Title");
+			addPanel.add(jobTitleLbl);
+	
+			jobTitleTxtField = new JTextField();
+			addPanel.add(jobTitleTxtField);
+			jobTitleTxtField.setColumns(10);
+	
+			dobLbl = new JLabel("Date Of Birth");
+			addPanel.add(dobLbl);
+	
+			dobTxtField = new JTextField();
+			addPanel.add(dobTxtField);
+			dobTxtField.setColumns(10);
+	
+			storeIdLbl = new JLabel("StoreID");
+			addPanel.add(storeIdLbl);
+	
+			storeIdTxtField = new JTextField();
+			addPanel.add(storeIdTxtField);
+			storeIdTxtField.setColumns(10);
+		}
 		addEmployeeBtn = new JButton("Add");
 		addPanel.add(addEmployeeBtn);
 		addEmployeeBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(selected == "Employee") {
 				employee.addEmployee(firstNameTxtField.getText().toString(), lastNameTxtField.getText().toString(),
 						jobTitleTxtField.getText().toString(), dobTxtField.getText().toString(),
 						Integer.parseInt(storeIdTxtField.getText()));
@@ -287,11 +400,22 @@ public class AppFrame extends JFrame {
 
 					e1.printStackTrace();
 				}
+				}
+				else if(selected == "Store") {
+					store.addStore(Integer.parseInt(firstNameTxtField.getText()), lastNameTxtField.getText().toString(),
+							Integer.parseInt(jobTitleTxtField.getText()), Integer.parseInt(dobTxtField.getText()));
+				}
 			}
 		});
 
 	}
-
+	private void updateAddPanel() {
+		addPanel.removeAll();
+		createAddPanel();
+		addPanel.revalidate();
+		addPanel.repaint();
+		addPanel.setVisible(true);
+	}
 	private void createMainPanel() {
 		mainPanel = new JPanel();
 		cards.add(mainPanel, "1");
@@ -323,18 +447,13 @@ public class AppFrame extends JFrame {
 
 	}
 
-	private void createEmployeeTable() {
-
-		tablePanel.add(new JScrollPane(table));
-
-	}
-
-
 	private void createNextBtn() {
 		nextBtn = new JButton("Modify");
 		nextBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cardLayout.next(cards);
+				updateAddPanel();
+				updateRemovePanel();
 			}
 		});
 		nextButtonPanel.add(nextBtn);
@@ -367,6 +486,8 @@ public class AppFrame extends JFrame {
 					updateTablePanel(storeQuery);
 				if(selected == "Employee")
 					updateTablePanel(query);
+				updateSortBtns();
+				updateFilterBtns();
 				
 			}
 		});
@@ -375,27 +496,46 @@ public class AppFrame extends JFrame {
 
 	private void createSortBtns() {
 		sortOptions = new JComboBox<String>();
+		String[] columnNames;
+		if(selected == "Employee")
+			columnNames = employee.getColumnNames();
+		else if(selected == "Store")
+			columnNames = store.getColumnNames();
+		else
+			columnNames = employee.getColumnNames();
+		
+		for(int i = 0; i < columnNames.length; i++) {
+			sortOptions.addItem(columnNames[i].toString());
+			
+		}
 		sortPanel.add(sortOptions);
-		sortOptions.addItem("FirstName");
-		sortOptions.addItem("LastName");
-		sortOptions.addItem("JobTitle");
-		sortOptions.addItem("DOB");
-		sortOptions.addItem("Id");
-		sortOptions.addItem("StoreID");
 		sortBtn = new JButton("Sort");
+		sortPanel.add(sortBtn);
 		
 		sortBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				String s = employee.sortEmployee(sortOptions.getSelectedItem().toString());
-
+				String s;
+				if(selected == "Employee")
+					s = employee.sortEmployee(sortOptions.getSelectedItem().toString());
+				else if(selected == "Store")
+					s = store.sortStore(sortOptions.getSelectedItem().toString());
+				else
+					s = employee.sortEmployee(sortOptions.getSelectedItem().toString());
+				
 				updateTablePanel(s);
 
 				}
 
 				});
-
-		sortPanel.add(sortBtn);
+		
+	}
+	
+	private void updateSortBtns() {
+		sortPanel.removeAll();
+		createSortBtns();
+		sortPanel.revalidate();
+		sortPanel.repaint();
+		sortPanel.setVisible(true);
 	}
 
 	private void createFilterPanel() {
@@ -406,12 +546,17 @@ public class AppFrame extends JFrame {
 
 	private void createFilterBtns() {
 		filterOptions = new JComboBox<String>();
-		filterOptions.addItem("FirstName");
-		filterOptions.addItem("LastName");
-		filterOptions.addItem("JobTitle");
-		filterOptions.addItem("DOB");
-		filterOptions.addItem("Id");
-		filterOptions.addItem("StoreID");
+		String[] columnNames;
+		if(selected == "Employee")
+			columnNames = employee.getColumnNames();
+		else if(selected == "Store")
+			columnNames = store.getColumnNames();
+		else
+			columnNames = employee.getColumnNames();
+		
+		for(int i = 0; i < columnNames.length; i++) {
+			filterOptions.addItem(columnNames[i].toString());
+		}
 		filterPanel.add(filterOptions);
 
 		filterTxtField = new JTextField();
@@ -422,15 +567,28 @@ public class AppFrame extends JFrame {
 		filterBtn.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-
-			String f = employee.filterEmployee(filterOptions.getSelectedItem().toString(), filterTxtField.getText().toString());
-
+				String f;
+				if(selected == "employee")
+					f = employee.filterEmployee(filterOptions.getSelectedItem().toString(), filterTxtField.getText().toString());
+				else if(selected == "store")
+					f = store.filterStore(filterOptions.getSelectedItem().toString(), filterTxtField.getText().toString());
+				else
+					f = employee.filterEmployee(filterOptions.getSelectedItem().toString(), filterTxtField.getText().toString());
+				
 			updateTablePanel(f);
 
 			}
 
 			});
 		filterPanel.add(filterBtn);
+	}
+	
+	private void updateFilterBtns(){
+		filterPanel.removeAll();
+		createFilterBtns();
+		filterPanel.revalidate();
+		filterPanel.repaint();
+		filterPanel.setVisible(true);
 	}
 	
 	private void updateTablePanel(String m) {
@@ -479,7 +637,6 @@ public class AppFrame extends JFrame {
 			JPanel contentPnl = new JPanel();
 			contentPane.add(contentPnl);
 			contentPnl.setLayout(new GridLayout(0, 2, 0, 0));
-
 			JLabel lblFirstName = new JLabel("First Name: ");
 			contentPane.add(lblFirstName);
 
@@ -519,23 +676,20 @@ public class AppFrame extends JFrame {
 			txtStoreid.setText(infos[5]);
 			contentPane.add(txtStoreid);
 			txtStoreid.setColumns(10);
-
 			JButton updateBtn = new JButton("UPDATE");
 			updateBtn.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-//				
-
+				public void actionPerformed(ActionEvent e) {	
 					employee.updateEmployee(txtFname.getText(), txtLname.getText(), txtPosition.getText(),
 							txtDob.getText(), Integer.parseInt(txtStoreid.getText()), id);
 
 					dispose();
 				}
+
 			});
 			contentPane.add(updateBtn);
 
 			setVisible(true);
 			
-
 		}
 
 	}

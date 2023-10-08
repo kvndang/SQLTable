@@ -5,6 +5,8 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.swing.table.DefaultTableModel;
+
 public class Store {
 	private Statement statement;
 	private ResultSet resultSet;
@@ -145,6 +147,25 @@ public class Store {
 		}
 	}
 	
+	
+	public String[] getStoreInfo(int idNum) {
+		String row = String.format("SELECT * FROM Store WHERE Id=%d", idNum);
+		String[] infos = new String[4];
+		try {
+			resultSet = statement.executeQuery(row);
+
+			if (resultSet.next()) {
+				for (int i = 0; i < infos.length; i++) {
+					infos[i] = resultSet.getString(i + 1);
+				}
+			}
+			return infos;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	/**
 	 * Removes a Store from the Store SQL Table
 	 * 
@@ -232,5 +253,30 @@ public class Store {
 		}
 		return null;
 	}
-	
+	public DefaultTableModel getTableModel(String query) {
+		try {
+			DefaultTableModel model = new DefaultTableModel();
+
+			ResultSet resultSet = statement.executeQuery(query);
+
+			ResultSetMetaData metaData = resultSet.getMetaData();
+			int columnCount = metaData.getColumnCount();
+			for (int i = 1; i <= columnCount; i++) {
+				model.addColumn(metaData.getColumnName(i));
+			}
+
+			while (resultSet.next()) {
+				Object[] rowData = new Object[columnCount];
+				for (int i = 1; i <= columnCount; i++) {
+					rowData[i - 1] = resultSet.getObject(i);
+				}
+				model.addRow(rowData);
+			}
+
+			return model;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }
